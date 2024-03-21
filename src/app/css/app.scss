@@ -1,0 +1,91 @@
+// IMPORTS
+@import '_variables';
+@import '_fonts';
+@import '_spacing';
+
+// COLORS
+$colors: (
+  'primary': $app-primary,
+  'secondary': $app-secondary,
+  'danger': $app-danger,
+  'info': $app-info,
+  'warning': $app-warning,
+  'success': $app-success,
+);
+
+$tones: (
+  'primary': $app-primary--tones,
+  'secondary': $app-secondary--tones,
+);
+
+// COLOR RELATED CLASSED
+@each $name, $color in $colors {
+
+  // classes for texts in every color
+  .text-app-#{$name} {
+    color: $color !important;
+  }
+  // classes for backgrounds in every color
+  .bg-app-#{$name} {
+    background-color: $color !important;
+  }
+  // classes for borders in every color
+  .border-app-#{$name} {
+    border-left: 1px solid $color !important;
+    border-right: 1px solid $color !important;
+    border-top: 1px solid $color !important;
+    border-bottom: 1px solid $color !important;
+  }
+
+  .divider-app-#{$name} {
+    background-color: $color !important;
+  }
+}
+
+// TONES RELATED CLASSED
+@each $name, $tone in $tones {
+  @each $tone-name, $tone-color in $tone {
+    .text-app-#{$name}-#{$tone-name} {
+      color: $tone-color !important;
+    }
+    .bg-app-#{$name}-#{$tone-name} {
+      background-color: $tone-color !important;
+    }
+    .border-app-#{$name}-#{$tone-name} {
+      border-left: 1px solid $tone-color !important;
+      border-right: 1px solid $tone-color !important;
+      border-top: 1px solid $tone-color !important;
+      border-bottom: 1px solid $tone-color !important;
+    }
+  }
+}
+
+// FONTS
+html,
+body {
+  font-family: $regular;
+  font-size: 15px;
+  background-color: $app-primary;
+  color: $app-secondary;
+  @media (max-width: 600px) {
+    font-size: 13px !important;
+  }
+}
+
+
+.q-field--standout.q-field--dark.q-field--highlighted .q-field__control {
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.q-field--standout.q-field--dark.q-field--highlighted .q-field__native {
+  color: white !important;
+}
+
+.q-field--standout.q-field--dark.q-field--highlighted .q-field__prepend {
+  color: white !important;
+}
+
+.q-field--standout.q-field--highlighted .q-field__control {
+  box-shadow: 0 0 0 0 !important;
+  background: #000 !important;
+}

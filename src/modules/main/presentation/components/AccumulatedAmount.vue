@@ -1,0 +1,59 @@
+<template>
+  <div>
+    <p class="q-mb-none bg-app-primary-900 border-app-primary-800 q-px-sm q-py-xs br-6">
+      <span class="text-app-primary-100 q-pr-sm" v-text="'Pote'" />
+      <span class="text-app-secondary q-pr-sm">$ {{ formattedAmount }}</span>
+
+    </p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, onBeforeUnmount, ref, toRefs, watch } from 'vue';
+
+const props = defineProps({
+  amount: {
+    type: Number,
+    required: true
+  }
+});
+
+const { amount } = toRefs(props);
+const displayedAmount = ref(amount.value);
+let intervalId: number | null | NodeJS.Timeout = null;
+
+watch(amount, (newAmount) =>
+{
+  if (intervalId !== null)
+  {
+    clearInterval(intervalId);
+  }
+
+  intervalId = setInterval(() =>
+  {
+    if (displayedAmount.value < newAmount)
+    {
+      displayedAmount.value++;
+    }
+    else if (displayedAmount.value > newAmount)
+    {
+      displayedAmount.value--;
+    }
+    else
+    {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }, 1);
+});
+
+onBeforeUnmount(() =>
+{
+  if (intervalId !== null)
+  {
+    clearInterval(intervalId);
+  }
+});
+
+const formattedAmount = computed(() => displayedAmount.value.toLocaleString('de-DE', { minimumFractionDigits: 2 }));
+</script>

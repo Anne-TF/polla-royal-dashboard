@@ -57,7 +57,18 @@ $tones: (
       border-top: 1px solid $tone-color !important;
       border-bottom: 1px solid $tone-color !important;
     }
+    .separator-app-#{$name}-#{$tone-name} {
+      background: $tone-color !important;
+    }
   }
+}
+
+.app-primary-separator {
+  border: 0;
+  background: rgb(0 0 0);
+  margin: 0;
+  transition: background 0.3s, opacity 0.3s;
+  flex-shrink: 0;
 }
 
 // FONTS

@@ -150,10 +150,10 @@ module.exports = configure(function(/* ctx */)
     sourceFiles: {
     //   rootComponent: 'src/App.vue',
     //   router: 'src/router/index',
-      store: 'src/app/stores/index'
-    //   registerServiceWorker: 'src-pwa/register-service-worker',
-    //   serviceWorker: 'src-pwa/custom-service-worker',
-    //   pwaManifestFile: 'src-pwa/manifest.json',
+      store: 'src/app/stores/index',
+      registerServiceWorker: 'src-pwa/register-service-worker',
+      //   serviceWorker: 'src-pwa/custom-service-worker',
+      pwaManifestFile: 'src-pwa/manifest.json'
     //   electronMain: 'src-electron/electron-main',
     //   electronPreload: 'src-electron/electron-preload',]
     },

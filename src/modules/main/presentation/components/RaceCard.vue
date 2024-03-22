@@ -1,18 +1,29 @@
 <template>
-  <q-card class="bg-app-secondary-2--dark wp-100 br-16">
+  <q-card class="bg-app-primary-100 wp-100 br-16">
+    <q-card-section class="fs-16 q-pt-sm q-pb-none q-px-dm">
+      <span class="text-semi-bold text-app-primary">Carrera</span>
+      <span class="text-app-secondary-700 q-mx-sm text-bold text-italic">
+        <span class="fs-12">#</span>{{race.number}}
+      </span>
+      <CoinIcon custom-class="absolute" size="25px" color="app-secondary-700" v-if="selectedHorses.length" />
+      <q-separator class="separator-app-primary-800" size="2px" style="width: 5.5em"/>
+    </q-card-section>
     <q-item>
       <q-item-section>
-        <div class="text-h6 q-mb-sm" style="border-bottom: 1px solid; width: fit-content;">
-          Carrera #{{ race.number }}
-          <q-icon name="your-icon-name" class="q-ml-md" />
-        </div>
         <div class="horses my-10">
           <HorseBox
             v-for="(horse, index) in race.horses"
             :key="index"
             :number="horse"
+            :selected="selectedHorses.includes(horse)"
+            @onSelect="(number) => {
+              if (number) {
+                selectedHorses.push(number);
+              } else {
+                selectedHorses = selectedHorses.filter((h) => h !== horse);
+              }
+            }"
             :size="40"
-            :color="`#F0${index}`"
           />
         </div>
       </q-item-section>
@@ -21,8 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, toRefs } from 'vue';
+import { defineProps, ref, toRefs } from 'vue';
 import HorseBox from './HorseBox.vue';
+import CoinIcon from '@common/Icons/CoinIcon.vue';
 
 const props = defineProps({
   race: {
@@ -32,6 +44,8 @@ const props = defineProps({
 });
 
 const { race } = toRefs(props);
+
+const selectedHorses = ref<number[]>([]);
 </script>
 
 <style scoped>

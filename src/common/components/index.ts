@@ -2,10 +2,12 @@ import ExampleComponent from './ExampleComponent.vue';
 import EssentialLink from './EssentialLink.vue';
 import BalanceVisualizer from './BalanceVisualizer.vue';
 import OptionSwitch from './OptionSwitch.vue';
+import AppSelect from './AppSelect.vue';
 
 export {
   EssentialLink,
   ExampleComponent,
   BalanceVisualizer,
-  OptionSwitch
+  OptionSwitch,
+  AppSelect
 };

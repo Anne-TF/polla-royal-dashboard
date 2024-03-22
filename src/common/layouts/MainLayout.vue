@@ -1,12 +1,21 @@
 <template>
   <q-layout view="lHh lpR lFf">
-    <q-header reveal class="flex justify-between wp-100 q-pt-xl q-pb-none q-px-md bg-app-primary">
-      <h1 class="no-margin text-uppercase text-regular ls-1" style="font-size: clamp(4vw, 5vw, 8vw)">Polla royal</h1>
-      <BalanceVisualizer />
+
+    <q-header reveal>
+      <q-toolbar class="flex justify-between wp-100 q-pt-md q-pb-none q-px-md bg-app-primary">
+        <q-toolbar-title>
+          <q-img
+            :src="'/images/horse.svg'"
+            fit="contain"
+            class="login_form-img hp-36"
+            width="80px"
+          />
+        </q-toolbar-title>
+        <BalanceVisualizer />
+      </q-toolbar>
     </q-header>
 
-
-    <q-page-container>
+    <q-page-container >
       <router-view />
     </q-page-container>
   </q-layout>

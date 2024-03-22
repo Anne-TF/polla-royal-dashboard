@@ -12,6 +12,7 @@
     "test": "echo \"No test specified\" && exit 0",
     "start": "node server.js",
     "start:dev": "quasar dev",
+    "start:dev:pwa": "quasar dev -m pwa",
     "start:dev:ssr": "quasar dev -m ssr",
     "ts:check": "tsc -p tsconfig.build.json --noEmit",
     "prepare": "husky install",
@@ -53,7 +54,14 @@
     "eslint-plugin-vue": "~9.22.0",
     "lint-staged": "^15.2.2",
     "prettier": "~3.2.5",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "workbox-build": "^7.0.0",
+    "workbox-cacheable-response": "^7.0.0",
+    "workbox-core": "^7.0.0",
+    "workbox-expiration": "^7.0.0",
+    "workbox-precaching": "^7.0.0",
+    "workbox-routing": "^7.0.0",
+    "workbox-strategies": "^7.0.0"
   },
   "engines": {
     "node": "^20 || ^18 || ^16",

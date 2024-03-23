@@ -2,19 +2,19 @@
   <q-page-sticky expand position="top" class="wp-100 bg-app-primary q-py-md" style="margin-top: -10px">
     <q-toolbar class="flex column" style="align-items: end !important;">
       <div style="font-size: clamp(1.5vw, 3.5vw, 4vw)" class="flex wp-100 justify-between items-center q-mt-sm">
-        <AppSelect :data="selectHippodromes"  :default-select="selectHippodromes[0]" @onSelect="handleSelect" />
-        <AccumulatedAmount :amount="amount"/>
+        <AppSelectComponent :data="selectHippodromes"  :default-select="selectHippodromes[0]" @onSelect="handleSelect" />
+        <AccumulatedAmountComponent :amount="amount"/>
       </div>
 
-      <OptionSwitch :default-option="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
+      <OptionSwitchComponent :default-option="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
     </q-toolbar>
   </q-page-sticky>
 </template>
 
 <script setup lang="ts">
-import { OptionSwitch, AppSelect } from '@common/components';
+import { OptionSwitchComponent, AppSelectComponent } from '@common/components';
 import { onMounted, ref } from 'vue';
-import AccumulatedAmount from './AccumulatedAmount.vue';
+import { AccumulatedAmountComponent } from '../components';
 import { GetHippodromesUseCase } from '@modules/polla/domain/useCases';
 import { usePollaStore } from '@modules/polla/domain/store';
 import { GetRacesUseCase } from '@modules/polla/domain/useCases/get-races.useCase';

@@ -1,13 +1,11 @@
-import ExampleComponent from './ExampleComponent.vue';
-import EssentialLink from './EssentialLink.vue';
-import BalanceVisualizer from './BalanceVisualizer.vue';
-import OptionSwitch from './OptionSwitch.vue';
-import AppSelect from './AppSelect.vue';
+import OptionSwitchComponent from './OptionSwitchComponent.vue';
+import AppSelectComponent from './AppSelectComponent.vue';
+import BalanceComponent from './BalanceComponent.vue';
+import NavComponent from './NavComponent.vue';
 
 export {
-  EssentialLink,
-  ExampleComponent,
-  BalanceVisualizer,
-  OptionSwitch,
-  AppSelect
+  OptionSwitchComponent,
+  AppSelectComponent,
+  BalanceComponent,
+  NavComponent
 };

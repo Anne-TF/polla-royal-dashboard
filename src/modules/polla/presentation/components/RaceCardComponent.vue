@@ -10,8 +10,8 @@
     </q-card-section>
     <q-item>
       <q-item-section>
-        <div class="horses my-10">
-          <HorseBox
+        <div class="runners my-10">
+          <RunnerBoxComponent
             v-for="(runner, index) in race.runners"
             :key="index"
             :number="runner.number"
@@ -33,8 +33,8 @@
 
 <script setup lang="ts">
 import { defineProps, ref, toRefs } from 'vue';
-import HorseBox from './HorseBox.vue';
-import CoinIcon from '@common/Icons/CoinIcon.vue';
+import RunnerBoxComponent from './RunnerBoxComponent.vue';
+import CoinIcon from '@common/icons/CoinIcon.vue';
 import { Race } from '@modules/polla/domain/models';
 
 const props = defineProps({
@@ -50,7 +50,7 @@ const selectedHorses = ref<number[]>([]);
 </script>
 
 <style scoped>
-.horses {
+.runners {
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(7, 1fr);
   grid-gap: 10px 10px;

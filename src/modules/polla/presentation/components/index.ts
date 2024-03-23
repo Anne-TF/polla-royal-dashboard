@@ -1,11 +1,9 @@
-import AccumulatedAmount from './AccumulatedAmount.vue';
-import RaceCard from './RaceCard.vue';
-import HorseBox from './HorseBox.vue';
-import NavSticky from './NavSticky.vue';
+import AccumulatedAmountComponent from './AccumulatedAmountComponent.vue';
+import RaceCardComponent from './RaceCardComponent.vue';
+import RunnerBoxComponent from './RunnerBoxComponent.vue';
 
 export {
-  AccumulatedAmount,
-  RaceCard,
-  HorseBox,
-  NavSticky
+  AccumulatedAmountComponent,
+  RaceCardComponent,
+  RunnerBoxComponent
 };

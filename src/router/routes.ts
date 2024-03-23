@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('@modules/main/presentation/pages/MainPage.vue')
+        component: () => import('@modules/polla/presentation/pages/MainPage.vue')
       }
     ],
     meta: {

@@ -145,6 +145,5 @@ const getRGBA = (hex: string) =>
   return bgColor.length > 3 ? bgColor.splice(2, 1).toString() : bgColor.toString();
 };
 
-
 </script>
 

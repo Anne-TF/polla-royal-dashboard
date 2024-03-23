@@ -26,7 +26,7 @@ export interface IOptionsSwitchProps {
   defaultOption: string;
 }
 
-const emit = defineEmits(['update']);
+const emit = defineEmits(['onSwitch']);
 
 const props = defineProps({
   options: {
@@ -44,13 +44,13 @@ const selectedOption = ref(options.value.find(option => option.value === default
 
 onMounted(() =>
 {
-  emit('update', selectedOption.value);
+  emit('onSwitch', selectedOption.value);
 });
 
 const selectOption = (option: { name: string, value: string }) =>
 {
   selectedOption.value = option;
-  emit('update', option);
+  emit('onSwitch', option);
 };
 </script>
 >

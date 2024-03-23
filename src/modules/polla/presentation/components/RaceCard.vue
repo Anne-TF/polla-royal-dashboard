@@ -12,15 +12,15 @@
       <q-item-section>
         <div class="horses my-10">
           <HorseBox
-            v-for="(horse, index) in race.horses"
+            v-for="(runner, index) in race.runners"
             :key="index"
-            :number="horse"
-            :selected="selectedHorses.includes(horse)"
+            :number="runner.number"
+            :selected="selectedHorses.includes(parseInt(runner.number, 10))"
             @onSelect="(number) => {
               if (number) {
                 selectedHorses.push(number);
               } else {
-                selectedHorses = selectedHorses.filter((h) => h !== horse);
+                selectedHorses = selectedHorses.filter((h) => h !== parseInt(runner.number, 10));
               }
             }"
             :size="40"
@@ -35,10 +35,11 @@
 import { defineProps, ref, toRefs } from 'vue';
 import HorseBox from './HorseBox.vue';
 import CoinIcon from '@common/Icons/CoinIcon.vue';
+import { Race } from '@modules/polla/domain/models';
 
 const props = defineProps({
   race: {
-    type: Object,
+    type: Object as () => Race,
     required: true
   }
 });

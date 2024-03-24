@@ -14,15 +14,12 @@ export class GetRacesUseCase
 
     const result  = (await PollaGateway.getRaces(hippodrome.id)).data.data;
 
-    const races = hippodrome.races.reduce<Race[]>((acc, raceId) =>
+    return hippodrome.races.reduce<Race[]>((acc, raceId) =>
     {
       return [
         ...acc,
         new Race(result[raceId])
       ];
     }, []);
-
-    console.log(races);
-    return races;
   }
 }

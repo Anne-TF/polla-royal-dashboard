@@ -5,7 +5,7 @@
       <span class="text-app-secondary-700 q-mx-sm text-bold text-italic">
         <span class="fs-12">#</span>{{race.number}}
       </span>
-      <CoinIcon custom-class="absolute" size="25px" color="app-secondary-700" v-if="selectedHorses.length" />
+      <CoinIcon custom-class="absolute" size="25px" color="app-secondary-700" v-if="selectedRunners.length" />
       <q-separator class="separator-app-primary-800" size="2px" style="width: 5.5em"/>
     </q-card-section>
     <q-item>
@@ -15,14 +15,10 @@
             v-for="(runner, index) in race.runners"
             :key="index"
             :number="runner.number"
-            :selected="selectedHorses.includes(parseInt(runner.number, 10))"
-            @onSelect="(number) => {
-              if (number) {
-                selectedHorses.push(number);
-              } else {
-                selectedHorses = selectedHorses.filter((h) => h !== parseInt(runner.number, 10));
-              }
-            }"
+            :runnerId="runner.id"
+            :selected="selectedRunners.includes(runner.id)"
+            @onSelect="onSelect"
+            @onDeselect="onDeselect"
             :size="40"
           />
         </div>
@@ -46,7 +42,17 @@ const props = defineProps({
 
 const { race } = toRefs(props);
 
-const selectedHorses = ref<number[]>([]);
+const selectedRunners = ref<string[]>([]);
+
+const onSelect = (runnerId: string) =>
+{
+  selectedRunners.value.push(runnerId);
+};
+
+const onDeselect = (runnerId: string) =>
+{
+  selectedRunners.value = selectedRunners.value.filter((h) => h !== runnerId);
+};
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import { IHippodrome } from '@modules/polla/infrastructure/interfaces';
-import { padNumber } from '@common/utils';
+import { padNumber, parse } from '@common/utils';
 
 export class Hippodrome
 {
@@ -12,10 +12,10 @@ export class Hippodrome
   {
     this.id = data.cardId;
     this.name = data.cardName;
-    this.allowsPlay = parseInt(data.statusPolla, 10) === 1;
+    this.allowsPlay = parse<number>(data.statusPolla) === 1;
 
-    const firstRace = parseInt(data.firstRace, 10);
-    const lastRace = parseInt(data.lastRace, 10);
+    const firstRace = parse<number>(data.firstRace);
+    const lastRace = parse<number>(data.lastRace);
 
     const races = [];
 

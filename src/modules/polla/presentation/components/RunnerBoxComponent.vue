@@ -1,18 +1,15 @@
 <template>
     <q-btn
-      @click="() => {
-        isActive = !isActive;
-        emit('onSelect', isActive ? number : null);
-      }"
+      @click="onClick"
       class="br-6" :style="`
-    background-color: rgba(${getRGBA(horseColor.bg)}, ${isActive ? '1' : '.1'}) !important;
-    color: ${isActive ? horseColor.text : '#000000'} !important;
-    width: ${size}px;
-    height: ${size}px;
-    border: 1px solid rgba(${getRGBA(horseColor.border)}, ${isActive ? '1' : '.3'}) !important;
+        background-color: rgba(${getRGBA(runnerColor.bg)}, ${isActive ? '1' : '.1'}) !important;
+        color: ${isActive ? runnerColor.text : '#000000'} !important;
+        width: ${size}px;
+        height: ${size}px;
+        border: 1px solid rgba(${getRGBA(runnerColor.border)}, ${isActive ? '1' : '.3'}) !important;
     `" flat>
       {{ number }}
-      <span v-if="isActive" :style="`border: 1px solid ${horseColor.text}; height: 30px; width: 30px;`" class="br-80 absolute-center" />
+      <span v-if="isActive" :style="`border: 1px solid ${runnerColor.text}; height: 30px; width: 30px;`" class="br-80 absolute-center" />
     </q-btn>
 </template>
 
@@ -26,11 +23,17 @@ interface IColor {
   border: string;
 }
 
-interface IHorseColor {
+interface IRunnerColor {
   [key: number]: IColor;
 }
 
-const horseColors: IHorseColor = {
+const defaultRunnerColor: IColor = {
+  bg: '#00ff61',
+  text: '#ff0000',
+  border: '#0089a9'
+};
+
+const runnerColors: IRunnerColor = {
   1: {
     bg: '#FF0000',
     text: '#FFFFFF',
@@ -115,6 +118,10 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  runnerId: {
+    type: String,
+    required: true
+  },
   number: {
     type: Number,
     required: true
@@ -130,19 +137,27 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (event: 'onSelect', value: number | null): void;
+  (event: 'onSelect', value: string): void;
+  (event: 'onDeselect', value: string): void;
 }>();
 
 const isActive = ref(props.selected ?? false);
 
-const { size, number } = toRefs(props);
+const { size, number, runnerId } = toRefs(props);
 
-const horseColor = horseColors[number.value];
+const runnerColor = runnerColors[number.value] ?? defaultRunnerColor;
 
 const getRGBA = (hex: string) =>
 {
   const bgColor = Object.values((hexToRgb(hex)));
   return bgColor.length > 3 ? bgColor.splice(2, 1).toString() : bgColor.toString();
+};
+
+const onClick = () =>
+{
+  isActive.value = !isActive.value;
+  const event = isActive.value ? 'onSelect' : 'onDeselect';
+  emit(event as any, runnerId.value);
 };
 
 </script>

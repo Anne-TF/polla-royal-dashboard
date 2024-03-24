@@ -6,3 +6,7 @@ export * from './axios-catch-error';
 export * from './set-base-path';
 export * from './pad-number';
 export * from './set-uri-params';
+export * from './string-to-array';
+export * from './parse';
+export * from './prototype-to-string';
+export * from './rm-prop';

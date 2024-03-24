@@ -1,7 +1,7 @@
 <template>
     <RaceCardComponent v-show="!loading" v-for="race in races" :key="race.number" class="mb-10" :race/>
     <div v-if="loading">
-        <q-skeleton class="mb-10" :count="3" :height="100" />
+        <q-skeleton class="mb-10" :count="3" height="100" />
     </div>
 </template>
 

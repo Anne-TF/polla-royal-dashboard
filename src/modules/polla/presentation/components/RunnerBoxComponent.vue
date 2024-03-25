@@ -1,9 +1,10 @@
 <template>
-    <q-btn
+    <q-btn :disable="!runner.allow"
       @click="toggleSelect"
       class="br-6" :style="getButtonStyle" flat>
-      {{ runner.number }}
+      {{ runner.programNumber }}
       <span v-if="isSelected" :style="getInnerSpanStyle" class="br-80 absolute-center" />
+      <q-icon v-if="!runner.allow" name="close" size="35px" class="absolute-center text-red" />
     </q-btn>
 </template>
 
@@ -103,6 +104,41 @@ const runnerColors: IRunnerColor = {
     bg: '#989489',
     text: '#FFFFFF',
     border: '#989489'
+  },
+  16: {
+    bg: '#97DCEE',
+    text: '#FF0000',
+    border: '#97DCEE'
+  },
+  17: {
+    bg: '#0E0F3B',
+    text: '#FFFFFF',
+    border: '#0E0F3B'
+  },
+  18: {
+    bg: '#08290E',
+    text: '#FEFF05',
+    border: '#08290E'
+  },
+  19: {
+    bg: '#191B88',
+    text: '#FF0000',
+    border: '#191B88'
+  },
+  20: {
+    bg: '#F91665',
+    text: '#FEFF05',
+    border: '#F91665'
+  },
+  21: {
+    bg: '#8C85BB',
+    text: '#000000',
+    border: '#8C85BB'
+  },
+  22: {
+    bg: '#540F62',
+    text: '#FFFFFF',
+    border: '#540F62'
   }
 };
 

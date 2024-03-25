@@ -28,7 +28,11 @@ export default store((/* { ssrContext } */) =>
   const pinia = createPinia();
 
   // You can add Pinia plugins here
-  pinia.use(createPersistedState());
+
+  if (process.env.USE_LOCAL_STORAGE)
+  {
+    pinia.use(createPersistedState());
+  }
 
   return pinia;
 });

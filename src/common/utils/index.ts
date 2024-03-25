@@ -11,3 +11,4 @@ export * from './parse';
 export * from './prototype-to-string';
 export * from './rm-prop';
 export * from './apply-highlight';
+export * from './remove-non-numeric-characters';

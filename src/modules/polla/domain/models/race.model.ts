@@ -1,10 +1,11 @@
 import { IRace } from '@modules/polla/infrastructure/interfaces';
-import { parse } from '@common/utils';
+import { parse, removeNonNumericCharacters } from '@common/utils';
 
 export interface IRunner {
   readonly id: string;
   readonly number: number;
-  readonly status: string;
+  readonly programNumber: string;
+  readonly allow: boolean;
 }
 
 export class Race
@@ -21,8 +22,9 @@ export class Race
     this.status = data.statusRace;
     this.runners = data.runners.map<IRunner>((runner) => ({
       id: runner.runnerId,
-      number: parse(runner.programNumber),
-      status: runner.runnerStatus
+      programNumber: runner.programNumber,
+      number: parse(removeNonNumericCharacters(runner.programNumber)),
+      allow: parse(runner.runnerStatus) === 1
     }));
   }
 }

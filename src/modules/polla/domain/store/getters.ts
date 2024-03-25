@@ -16,6 +16,10 @@ const getters: PiniaGetters = {
   Betting: (state: State) =>
   {
     return Object.values(state.bet.races).some((r) => r.length);
+  },
+  OptionSelected: (state: State) =>
+  {
+    return state.optionSelected;
   }
 };
 

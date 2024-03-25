@@ -12,5 +12,6 @@ export default (): IConfig => ({
     basePath: process.env.API_BASE_PATH,
     useSSL: process.env.API_USE_SSL,
     withCredentials: process.env.API_WITH_CREDENTIALS
-  }
+  },
+  useLocalStorage: process.env.USE_LOCAL_STORAGE
 });

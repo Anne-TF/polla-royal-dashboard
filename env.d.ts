@@ -13,5 +13,7 @@ declare namespace NodeJS {
     API_BASE_PATH: string;
     API_USE_SSL: boolean;
     API_WITH_CREDENTIALS: boolean;
+
+    USE_LOCAL_STORAGE: boolean;
   }
 }

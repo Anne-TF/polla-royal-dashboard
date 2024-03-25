@@ -54,15 +54,17 @@ const pollaStore = usePollaStore();
 watch(() => selectedRunners, (newValue) =>
 {
   pollaStore.setBetOfRace(race.value.id, newValue.value);
-}, { immediate: true, deep: true });
+}, { deep: true });
 
 </script>
 
 <style scoped>
+
 .runners {
-  display: grid;
-  grid-template: repeat(3, 1fr) / repeat(7, 1fr);
-  grid-gap: 10px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  gap: 3vw;
 }
 
 .race {

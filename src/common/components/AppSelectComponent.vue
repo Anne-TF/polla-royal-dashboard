@@ -156,7 +156,7 @@ watch(defaultSelect, (value) =>
 
 watch(data, (value) =>
 {
-  if(value.length)
+  if (value.length)
   {
     _data.value = value;
   }

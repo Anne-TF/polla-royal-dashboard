@@ -18,4 +18,5 @@ export interface IConfig {
   environment: string;
   app: IAppConfig;
   server: IServerConfig;
+  useLocalStorage: boolean;
 }

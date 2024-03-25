@@ -7,11 +7,12 @@
           :defaultSelect="selectHippodromes[0]"
           :allowChange="!pollaStore.Betting"
           :confirmationMessage="'¿Estás seguro de cambiar de hipódromo? Posees una apuesta en curso.'"
-          @onSelect="handleSelect" />
+          @onSelect="handleSelect"
+        />
         <AccumulatedAmountComponent :amount="amount"/>
       </div>
 
-      <OptionSwitchComponent :default-option="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
+      <OptionSwitchComponent :defaultOption="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
     </q-toolbar>
   </q-page-sticky>
 
@@ -19,42 +20,69 @@
 
 <script setup lang="ts">
 import { OptionSwitchComponent, AppSelectComponent } from '@common/components';
-import { onBeforeMount, onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { AccumulatedAmountComponent } from '../components';
 import { GetHippodromesUseCase } from '@modules/polla/domain/useCases';
 import { usePollaStore } from '@modules/polla/domain/store';
+import { OptionsTap } from '@modules/polla/domain/store/types';
 
 const pollaStore = usePollaStore();
 
 const selectHippodromes = ref([]);
 const amount = ref(5000);
 
-const handleSwitch = (selectedOption: string) =>
-{
-  console.log('La opción seleccionada es: ', selectedOption);
-};
-
-const handleSelect = (selectedOption: string) =>
-{
-  console.log(pollaStore.Betting)
-
-  pollaStore.setSelectedHippodrome(selectedOption);
-};
-
-
-const switchOptions = {
+const switchOptions = reactive({
   default: 'play',
   options: [
     {
       name: 'Jugar',
-      value: 'play'
+      value: 'play',
+      disabled: false
     },
     {
       name: 'Historial',
       value: 'history'
     }
   ]
+});
+
+const handleSwitch = (selectedOption: OptionsTap) =>
+{
+  pollaStore.setOptionSelected(selectedOption);
 };
+
+const handleSelect = (selectedOption: string) =>
+{
+  pollaStore.setSelectedHippodrome(selectedOption);
+};
+
+watch(() => pollaStore.Hippodromes, (newValue) =>
+{
+  if (!newValue.length)
+  {
+    return;
+  }
+
+  selectHippodromes.value = newValue.map((hippodrome) => ({
+    name: hippodrome.name,
+    value: hippodrome.id,
+    suffix: '19/03'
+  }));
+
+  handleSelect(selectHippodromes.value[0].value);
+}, { immediate: true, deep: true });
+
+watch(() => pollaStore.SelectedHippodrome, (newValue) =>
+{
+  switchOptions.default = pollaStore.OptionSelected;
+
+  switchOptions.options[0].disabled = !newValue?.allowsPlay;
+}, { immediate: true, deep: true });
+
+onMounted(async() =>
+{
+  await GetHippodromesUseCase.handle();
+});
 
 setTimeout(() =>
 {
@@ -70,28 +98,4 @@ setTimeout(() =>
 {
   amount.value = 4500;
 }, 6000);
-
-watch(() => pollaStore.Hippodromes, (newValue) =>
-{
-
-  if (!newValue.length)
-  {
-    return;
-  }
-
-  selectHippodromes.value = newValue.map((hippodrome) => ({
-    name: hippodrome.name,
-    value: hippodrome.id,
-    suffix: '19/03'
-  }));
-
-  handleSelect(selectHippodromes.value[0].value);
-}, { immediate: true, deep: true });
-
-onMounted(async() =>
-{
-  await GetHippodromesUseCase.handle();
-});
-
-
 </script>

@@ -1,13 +1,21 @@
 import { PiniaGetters, State } from './types';
 
 const getters: PiniaGetters = {
-  GetHippodromes: (state: State) =>
+  Hippodromes: (state: State) =>
   {
     return state.hippodromes;
   },
-  GetSelectedHippodrome: (state: State) =>
+  SelectedHippodrome: (state: State) =>
   {
     return state.selectedHippodrome;
+  },
+  Bet: (state: State) =>
+  {
+    return state.bet;
+  },
+  Betting: (state: State) =>
+  {
+    return Object.values(state.bet.races).some((r) => r.length);
   }
 };
 

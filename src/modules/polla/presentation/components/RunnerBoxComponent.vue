@@ -1,21 +1,16 @@
 <template>
     <q-btn
-      @click="onClick"
-      class="br-6" :style="`
-        background-color: rgba(${getRGBA(runnerColor.bg)}, ${isActive ? '1' : '.1'}) !important;
-        color: ${isActive ? runnerColor.text : '#000000'} !important;
-        width: ${size}px;
-        height: ${size}px;
-        border: 1px solid rgba(${getRGBA(runnerColor.border)}, ${isActive ? '1' : '.3'}) !important;
-    `" flat>
-      {{ number }}
-      <span v-if="isActive" :style="`border: 1px solid ${runnerColor.text}; height: 30px; width: 30px;`" class="br-80 absolute-center" />
+      @click="toggleSelect"
+      class="br-6" :style="getButtonStyle" flat>
+      {{ runner.number }}
+      <span v-if="isSelected" :style="getInnerSpanStyle" class="br-80 absolute-center" />
     </q-btn>
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, toRefs } from 'vue';
+import { defineProps, toRefs, computed } from 'vue';
 import { colors } from 'quasar';
+import { IRunner } from '@modules/polla/domain/models';
 
 interface IColor {
   bg: `#${string}`;
@@ -111,54 +106,61 @@ const runnerColors: IRunnerColor = {
   }
 };
 
-const  { hexToRgb } = colors;
-
 const props = defineProps({
   size: {
     type: Number,
     required: true
   },
-  runnerId: {
-    type: String,
-    required: true
-  },
-  number: {
-    type: Number,
+  runner: {
+    type: Object as () => IRunner,
     required: true
   },
   modelValue: {
-    type: Boolean,
-    default: false
-  },
-  selected: {
-    type: Boolean,
-    default: false
+    type: Array as () => string[],
+    required: true
   }
 });
 
 const emit = defineEmits<{
-  (event: 'onSelect', value: string): void;
-  (event: 'onDeselect', value: string): void;
+  (event: 'update:modelValue', value: string[]): void;
 }>();
 
-const isActive = ref(props.selected ?? false);
-
-const { size, number, runnerId } = toRefs(props);
-
-const runnerColor = runnerColors[number.value] ?? defaultRunnerColor;
+const { size, runner, modelValue } = toRefs(props);
 
 const getRGBA = (hex: string) =>
 {
-  const bgColor = Object.values((hexToRgb(hex)));
+  const bgColor = Object.values((colors.hexToRgb(hex)));
   return bgColor.length > 3 ? bgColor.splice(2, 1).toString() : bgColor.toString();
 };
 
-const onClick = () =>
+const toggleSelect = () =>
 {
-  isActive.value = !isActive.value;
-  const event = isActive.value ? 'onSelect' : 'onDeselect';
-  emit(event as any, runnerId.value);
+  const index = modelValue.value.indexOf(runner.value.id);
+
+  if (index > -1)
+  {
+    modelValue.value.splice(index, 1);
+  }
+  else
+  {
+    modelValue.value.push(runner.value.id);
+  }
+
+  emit('update:modelValue', modelValue.value);
 };
+
+const isSelected = computed(() => modelValue.value.includes(runner.value.id));
+
+const runnerColor = computed(() => runnerColors[runner.value.number] ?? defaultRunnerColor);
+
+const getButtonStyle = computed(() => `
+  background-color: rgba(${getRGBA(runnerColor.value.bg)}, ${isSelected.value ? '1' : '.1'}) !important;
+  color: ${isSelected.value ? runnerColor.value.text : '#000000'} !important;
+  width: ${size.value}px;
+  height: ${size.value}px;
+  border: 1px solid rgba(${getRGBA(runnerColor.value.border)}, ${isSelected.value ? '1' : '.3'}) !important;
+`);
+const getInnerSpanStyle = computed(() => `border: 1px solid ${runnerColor.value.text}; height: 30px; width: 30px;`);
 
 </script>
 

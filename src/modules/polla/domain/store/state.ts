@@ -4,7 +4,11 @@ const state = (): State =>
 {
   return {
     hippodromes: [],
-    selectedHippodrome: null
+    selectedHippodrome: null,
+    bet: {
+      hippodromeId: null,
+      races: {}
+    }
   };
 };
 

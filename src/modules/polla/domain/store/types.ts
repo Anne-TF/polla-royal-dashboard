@@ -5,16 +5,25 @@ import { Hippodrome } from '@modules/polla/domain/models';
 export type State = {
   hippodromes: Hippodrome[];
   selectedHippodrome: Hippodrome | null;
+  bet: {
+    hippodromeId: string;
+    races: {
+      [raceId: string]: string[]
+    }
+  }
 }
 
 export type Getters = {
-  GetHippodromes: Hippodrome[];
-  GetSelectedHippodrome: Hippodrome | null;
+  Hippodromes: Hippodrome[];
+  SelectedHippodrome: Hippodrome | null;
+  Bet: State['bet'];
+  Betting: boolean;
 };
 
 export type Actions = {
   setHippodromes: (value: Hippodrome[]) => void;
   setSelectedHippodrome: (value: string) => void;
+  setBetOfRace: (cardId: string, runners: string[]) => void;
 };
 
 export type PiniaStore = Store<'polla', State, Getters, Actions>;

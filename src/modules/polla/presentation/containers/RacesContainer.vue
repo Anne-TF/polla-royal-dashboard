@@ -1,8 +1,6 @@
 <template>
-    <RaceCardComponent v-show="!loading" v-for="race in races" :key="race.number" class="mb-10" :race/>
-    <div v-if="loading">
-        <q-skeleton class="mb-10" :count="3" height="100" />
-    </div>
+    <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
+    <RaceCardComponent v-show="!loading" v-for="(race, index) in races" :key="`${index}-${race.id}`" class="mb-10" :race/>
 </template>
 
 <script setup lang="ts">
@@ -16,12 +14,11 @@ const pollaStore = usePollaStore();
 const loading = ref<boolean>(true);
 const races = ref<Race[]>([]);
 
-watch(() => pollaStore.GetSelectedHippodrome, async(newValue) =>
+watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 {
   if (newValue)
   {
-    races.value = await GetRacesUseCase.handle(pollaStore.GetSelectedHippodrome);
-
+    races.value = await GetRacesUseCase.handle(newValue);
     loading.value = false;
   }
 }, { immediate: true, deep: true });

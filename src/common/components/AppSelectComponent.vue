@@ -1,7 +1,8 @@
 <template>
   <div class="wp-40">
     <q-btn @click="parxRacingDialog = true" :ripple="false" class="fs-15 wp-100" dense flat no-caps>
-      <span class="text-semi-bold text-app-secondary-400 wp-60 ellipsis">{{ selectedOption.name }}</span>
+      <span v-if="selectedOption.name" class="text-semi-bold text-app-secondary-400 wp-60 ellipsis">{{ selectedOption.name }}</span>
+      <q-skeleton v-else type="text" class="wp-60" style="height: 20px"/>
       <span v-if="selectedOption?.suffix" class="text-app-primary-50 fs-12 q-mx-xs text-medium">{{selectedOption.suffix}}</span>
       <q-icon size="1.2em" style="margin-top: -5px;" name="arrow_drop_down" class="text-app-primary-200"/>
       <q-separator class="wp-100 separator-app-primary-800 q-mt-xs" size="2px"/>
@@ -21,14 +22,41 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input standout dark rounded v-model="search" dense placeholder="Buscar" style="width: auto"/>
+          <q-input standout dark rounded v-model="search" @update:model-value="onSearch($event as string)" dense placeholder="Buscar" style="width: auto"/>
         </q-card-section>
 
         <q-card-section class="q-pt-none overflow-auto hp-70">
-          <q-item v-for="option of data" :key="option.value" clickable v-ripple class="br-50 text-medium fs-14"
-                  @click="onClick(option)" :active="selectedOption.value === option.value" active-class="bg-app-primary-900 text-app-secondary fs-14 text-semi-bold" >
-            <q-item-section>{{ option.name }}</q-item-section>
+          <q-item v-for="option of _data" :key="option.value" clickable v-ripple class="br-50 text-medium fs-14"
+                  @click="onSelect(option)" :active="selectedOption.value === option.value" active-class="bg-app-primary-900 text-app-secondary fs-14 text-semi-bold" >
+            <q-item-section>
+              <span v-html="option.name.toLowerCase().includes(search.toLowerCase()) && search ?
+                  applyHighlight(option.name, search, 'text-semi-bold text-yellow') :
+              option.name" />
+            </q-item-section>
           </q-item>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'default'" v-model="confirmDialog">
+      <q-card flat class="bg-app-primary-100 text-app-primary flex column flex-center"
+              :class="{ 'hv-50' : $q.screen.height <= 800, 'hv-30' : $q.screen.height > 800 }"
+              :style="`border-radius: ${$q.screen.lt.md ? '16px 16px 0 0' : '32px'} !important;`">
+
+        <q-card-section class="flex column flex-center q-pb-sm">
+          <q-icon name="warning" color="app-warning" class="q-mb-sm" size="3em" />
+          <p class="no-margin fs-18">
+            <span class="text-semi-bold">Confirmacion</span>
+          </p>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none q-mb-xl">
+          <p class="fs-14 text-medium text-center">{{confirmationMessage}}</p>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none wp-100 flex absolute-bottom flex-center q-gutter-x-md q-mb-lg">
+          <q-btn dense flat rounded class="q-px-md text-semi-bold" style="opacity: .7;" color="app-primary" label="Cambiar" @click="onConfirm" />
+          <q-btn dense unelevated rounded class="q-px-md bg-app-secondary text-app-primary text-semi-bold" label="Cancelar" @click="confirmDialog = false" />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -37,7 +65,8 @@
 
 <script setup lang="ts">
 
-import { ref, toRefs } from 'vue';
+import { ref, toRefs, watch } from 'vue';
+import { applyHighlight } from '@common/utils';
 
 interface IOption {
   name: string;
@@ -48,9 +77,6 @@ interface IOption {
 const emit = defineEmits<{
   (event: 'onSelect', value: string): void;
 }>();
-
-const parxRacingDialog = ref<boolean>(false);
-const search = ref<string>('');
 
 
 const props = defineProps({
@@ -63,18 +89,77 @@ const props = defineProps({
     type: Array as () => IOption[],
     required: true,
     default: () => []
+  },
+  allowChange: {
+    type: Boolean,
+    default: true
+  },
+  confirmationMessage: {
+    type: String,
+    default: '¿Desea cambiar la opción seleccionada?'
   }
 });
 
-const { data, defaultSelect } = toRefs(props);
+const { data, defaultSelect, allowChange, confirmationMessage } = toRefs(props);
 
+const parxRacingDialog = ref<boolean>(false);
+const confirmDialog = ref<boolean>(false);
+const search = ref<string>('');
 const selectedOption = ref<IOption>(defaultSelect.value);
+const auxSelectedOption = ref<IOption>(defaultSelect.value);
 
-const onClick = (option: IOption) =>
+const _data = ref<IOption[]>(data.value);
+
+const changeSelection = (option: IOption) =>
 {
   selectedOption.value = option;
   parxRacingDialog.value = false;
+  confirmDialog.value = false;
   emit('onSelect', option.value);
 };
+
+const onSearch = (needle: string) =>
+{
+  if (needle)
+  {
+    _data.value = data.value.filter((option) => option.name.toLowerCase().includes(needle.toLowerCase()));
+    return;
+  }
+  _data.value = data.value;
+};
+
+const onSelect = (option: IOption) =>
+{
+  if (allowChange.value)
+  {
+    changeSelection(option);
+  }
+  else
+  {
+    parxRacingDialog.value = false;
+    confirmDialog.value = true;
+    auxSelectedOption.value = option;
+  }
+};
+
+const onConfirm = () =>
+{
+  changeSelection(auxSelectedOption.value);
+};
+
+
+watch(defaultSelect, (value) =>
+{
+  selectedOption.value = value;
+}, { immediate: true, deep: true });
+
+
+watch(data, (value) =>
+{
+  if(value.length)
+  {
+    _data.value = value;
+  }
+}, { immediate: true, deep: true });
 
 </script>

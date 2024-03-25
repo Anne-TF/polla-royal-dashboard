@@ -11,7 +11,6 @@ export class GetRacesUseCase
   @Catch(AxiosError, axiosCatchError)
   static async handle(hippodrome: Hippodrome)
   {
-
     const result  = (await PollaGateway.getRaces(hippodrome.id)).data.data;
 
     return hippodrome.races.reduce<Race[]>((acc, raceId) =>

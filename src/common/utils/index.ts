@@ -10,3 +10,4 @@ export * from './string-to-array';
 export * from './parse';
 export * from './prototype-to-string';
 export * from './rm-prop';
+export * from './apply-highlight';

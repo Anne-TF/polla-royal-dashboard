@@ -17,13 +17,8 @@ export class Hippodrome
     const firstRace = parse<number>(data.firstRace);
     const lastRace = parse<number>(data.lastRace);
 
-    const races = [];
-
-    for (let i = firstRace; i <= lastRace; i++)
-    {
-      races.push(`${this.id}${padNumber(i)}`);
-    }
-
-    this.races = races;
+    this.races = Array.from({
+      length: lastRace - firstRace + 1
+    }, (_, i) => `${this.id}${padNumber(i + firstRace)}`);
   }
 }

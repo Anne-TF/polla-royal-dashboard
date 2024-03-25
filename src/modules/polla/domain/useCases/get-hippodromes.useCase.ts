@@ -20,7 +20,5 @@ export class GetHippodromesUseCase
     const pollaStore = usePollaStore();
 
     pollaStore.setHippodromes(hippodromes);
-
-    return hippodromes;
   }
 }

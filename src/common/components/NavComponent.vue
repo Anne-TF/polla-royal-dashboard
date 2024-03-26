@@ -1,6 +1,6 @@
 <template>
-  <q-header reveal>
-    <q-toolbar class="flex justify-between wp-100 q-pt-md q-pb-none q-px-md bg-app-primary">
+  <q-header reveal class="bg-app-primary ">
+    <q-toolbar class="flex justify-between wp-100 q-pt-md q-pb-none q-px-md">
       <q-toolbar-title>
         <q-img
           :src="'/images/horse.svg'"

@@ -14,6 +14,8 @@ export type State = {
       [raceId: string]: string[]
     }
   }
+  pot: number;
+  ticket: number;
 }
 
 export type Getters = {
@@ -22,6 +24,8 @@ export type Getters = {
   Bet: State['bet'];
   Betting: boolean;
   OptionSelected: OptionsTap;
+  Pot: number;
+  Ticket: number;
 };
 
 export type Actions = {
@@ -29,6 +33,8 @@ export type Actions = {
   setSelectedHippodrome: (value: string) => void;
   setBetOfRace: (cardId: string, runners: string[]) => void;
   setOptionSelected: (value: OptionsTap) => void;
+  setPot: (value: number) => void;
+  setTicket: (value: number) => void;
 };
 
 export type PiniaStore = Store<'polla', State, Getters, Actions>;

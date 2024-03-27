@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-self-end q-mb-none q-pa-xs q-mt-md bg-app-primary-900 border-app-primary-800 br-8" style="gap: 5px;">
+  <div class="flex justify-self-end q-mb-none q-pa-xs bg-app-primary-900 border-app-primary-800 br-8" style="gap: 5px;">
     <q-btn flat size="sm" rounded :ripple="false"
       v-for="(option, index) in options"
       :key="index"

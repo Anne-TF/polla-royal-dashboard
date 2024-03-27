@@ -9,7 +9,9 @@ const state = (): State =>
     bet: {
       hippodromeId: null,
       races: {}
-    }
+    },
+    pot: 0,
+    ticket: 0
   };
 };
 

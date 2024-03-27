@@ -16,7 +16,7 @@
       <q-separator class="separator-app-primary-800" size="2px" style="width: 5.5em"/>
     </q-card-section>
     <q-item>
-      <q-item-section>
+      <q-item-section class="no-wrap">
         <div class="runners my-10">
           <RunnerBoxComponent
             v-for="(runner, index) in race.runners"
@@ -61,10 +61,10 @@ watch(() => selectedRunners, (newValue) =>
 <style scoped>
 
 .runners {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: stretch;
+  display: grid;
   gap: 3vw;
+  grid-auto-rows: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
 }
 
 .race {

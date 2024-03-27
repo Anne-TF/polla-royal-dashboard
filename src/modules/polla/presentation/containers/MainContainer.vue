@@ -29,7 +29,7 @@ watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 {
   tapOptionSelected.value = pollaStore.OptionSelected;
 
-  hippodromeId.value = newValue.id;
+  hippodromeId.value = newValue?.id;
 
   if (newValue?.allowsPlay)
   {

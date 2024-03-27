@@ -9,10 +9,14 @@
           :confirmationMessage="'¿Estás seguro de cambiar de hipódromo? Posees una apuesta en curso.'"
           @onSelect="handleSelect"
         />
-        <AccumulatedAmountComponent :amount="amount"/>
+        <OptionSwitchComponent :defaultOption="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
       </div>
 
-      <OptionSwitchComponent :defaultOption="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
+      <div style="font-size: clamp(1.5vw, 3.5vw, 4vw)" class="flex wp-100 justify-between items-center q-mt-md ">
+        <AccumulatedAmountComponent :amount="pot" :type="'Pote'"/>
+        <AccumulatedAmountComponent :amount="10" type="Ticket"/>
+      </div>
+
     </q-toolbar>
   </q-page-sticky>
 
@@ -22,14 +26,14 @@
 import { OptionSwitchComponent, AppSelectComponent } from '@common/components';
 import { onMounted, reactive, ref, watch } from 'vue';
 import { AccumulatedAmountComponent } from '../components';
-import { GetHippodromesUseCase } from '@modules/polla/domain/useCases';
+import { GetHippodromesUseCase, GetPotUseCase } from '@modules/polla/domain/useCases';
 import { usePollaStore } from '@modules/polla/domain/store';
 import { OptionsTap } from '@modules/polla/domain/store/types';
 
 const pollaStore = usePollaStore();
 
 const selectHippodromes = ref([]);
-const amount = ref(5000);
+const pot = ref(0);
 
 const switchOptions = reactive({
   default: 'play',
@@ -72,30 +76,29 @@ watch(() => pollaStore.Hippodromes, (newValue) =>
   handleSelect(selectHippodromes.value[0].value);
 }, { immediate: true, deep: true });
 
-watch(() => pollaStore.SelectedHippodrome, (newValue) =>
+watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 {
   switchOptions.default = pollaStore.OptionSelected;
 
   switchOptions.options[0].disabled = !newValue?.allowsPlay;
+
+  if (newValue?.id)
+  {
+    await GetPotUseCase.handle(newValue.id);
+  }
+
+}, { immediate: true, deep: true });
+
+watch(() => pollaStore.Pot, (newValue) =>
+{
+  pot.value = newValue;
 }, { immediate: true, deep: true });
 
 onMounted(async() =>
 {
-  await GetHippodromesUseCase.handle();
+  await Promise.all([
+    GetHippodromesUseCase.handle()
+  ]);
 });
 
-setTimeout(() =>
-{
-  amount.value = 5100;
-}, 2000);
-
-setTimeout(() =>
-{
-  amount.value = 5020;
-}, 4000);
-
-setTimeout(() =>
-{
-  amount.value = 4500;
-}, 6000);
 </script>

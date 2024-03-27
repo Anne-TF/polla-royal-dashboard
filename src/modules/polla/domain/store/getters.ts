@@ -20,6 +20,14 @@ const getters: PiniaGetters = {
   OptionSelected: (state: State) =>
   {
     return state.optionSelected;
+  },
+  Pot:(state: State) =>
+  {
+    return state.pot;
+  },
+  Ticket: (state: State) =>
+  {
+    return state.ticket;
   }
 };
 

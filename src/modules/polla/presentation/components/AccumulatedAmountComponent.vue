@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p class="q-mb-none bg-app-primary-900 border-app-primary-800 q-px-sm q-py-xs br-8">
-      <span class="text-app-primary-100 q-pr-sm" v-text="'Pote'" />
+    <p class="q-mb-none bg-app-primary-900 border-app-primary-800 q-px-sm q-py-xs br-8 ">
+      <span class="text-app-primary-100 q-pr-sm" v-text="type" />
       <span class="text-app-secondary q-pr-sm">$ {{ formattedAmount }}</span>
     </p>
   </div>
@@ -13,38 +13,21 @@ import { computed, onBeforeUnmount, ref, toRefs, watch } from 'vue';
 const props = defineProps({
   amount: {
     type: Number,
-    required: true
-  }
+    required: true,
+    default: 0
+  },
+  type: String
 });
 
-const { amount } = toRefs(props);
+const { amount, type } = toRefs(props);
 const displayedAmount = ref(amount.value);
-let intervalId: number | null | NodeJS.Timeout = null;
+const first = ref<boolean>(true);
+const intervalId: number | null | NodeJS.Timeout = null;
 
 watch(amount, (newAmount) =>
 {
-  if (intervalId !== null)
-  {
-    clearInterval(intervalId);
-  }
-
-  intervalId = setInterval(() =>
-  {
-    if (displayedAmount.value < newAmount)
-    {
-      displayedAmount.value++;
-    }
-    else if (displayedAmount.value > newAmount)
-    {
-      displayedAmount.value--;
-    }
-    else
-    {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-  }, 1);
-});
+  displayedAmount.value = newAmount;
+}, { deep: true });
 
 onBeforeUnmount(() =>
 {
@@ -55,4 +38,37 @@ onBeforeUnmount(() =>
 });
 
 const formattedAmount = computed(() => displayedAmount.value.toLocaleString('de-DE', { minimumFractionDigits: 2 }));
+
+// watch(amount, (newAmount) =>
+// {
+//
+//   if (first.value)
+//   {
+//     displayedAmount.value = newAmount;
+//     first.value = false
+//     return;
+//   }
+//
+//   if (intervalId !== null)
+//   {
+//     clearInterval(intervalId);
+//   }
+//
+//   intervalId = setInterval(() =>
+//   {
+//     if (displayedAmount.value < newAmount)
+//     {
+//       displayedAmount.value++;
+//     }
+//     else if (displayedAmount.value > newAmount)
+//     {
+//       displayedAmount.value--;
+//     }
+//     else
+//     {
+//       clearInterval(intervalId);
+//       intervalId = null;
+//     }
+//   }, 1);
+// }, { deep: true });
 </script>

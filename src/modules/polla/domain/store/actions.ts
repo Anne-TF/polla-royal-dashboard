@@ -26,6 +26,14 @@ const actions: PiniaActions = {
   setOptionSelected(value)
   {
     this.optionSelected = value;
+  },
+  setPot(value)
+  {
+    this.pot = value;
+  },
+  setTicket(value)
+  {
+    this.ticket = value;
   }
 };
 

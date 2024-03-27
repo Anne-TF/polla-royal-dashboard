@@ -7,6 +7,10 @@ export const pollaRoutes =  {
   races: {
     url: 'apiPolla/race/:id',
     method: 'GET'
+  },
+  pot: {
+    url: 'apiPolla/pot/:id',
+    method: 'GET'
   }
 };
 

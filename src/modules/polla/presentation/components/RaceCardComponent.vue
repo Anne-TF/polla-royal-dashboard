@@ -62,7 +62,7 @@ watch(() => selectedRunners, (newValue) =>
 
 .runners {
   display: grid;
-  gap: 3vw;
+  gap: 1rem;
   grid-auto-rows: 40px;
   grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
 }

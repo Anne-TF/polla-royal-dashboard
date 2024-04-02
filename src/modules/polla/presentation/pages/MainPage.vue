@@ -1,5 +1,6 @@
 <template>
-  <q-page class="q-px-md q-pb-md" style="padding-top: 10em;">
+  <q-page
+    class="q-px-md q-pb-md" style="padding-top: 10em;">
     <MainContainer/>
     <TicketContainer/>
     <NavStickyContainer/>

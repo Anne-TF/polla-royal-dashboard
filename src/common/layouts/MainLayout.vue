@@ -1,7 +1,11 @@
 <template>
-  <q-layout view="lHh lpR lFf">
+  <q-layout view="lHh lpR lFf"
+   :class="{
+      'wp-50 q-mx-auto' : $q.screen.gt.md
+    }"
+   >
     <HeadContainer />
-    <q-page-container >
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>

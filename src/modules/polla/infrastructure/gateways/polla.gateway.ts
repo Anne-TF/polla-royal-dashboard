@@ -2,7 +2,12 @@ import { HTTP } from '@common/services';
 import { AxiosRequestConfig } from 'axios';
 import configuration from '@config/configuration';
 import { pollaRoutes } from '@modules/polla/infrastructure/routes';
-import { IGetHippodromesResponse, IGetPotResponse, IGetRacesResponse } from '@modules/polla/infrastructure/interfaces';
+import {
+  IGetTicketHistoryResponse,
+  IGetHippodromesResponse,
+  IGetPotResponse,
+  IGetRacesResponse
+} from '@modules/polla/infrastructure/interfaces';
 import { setBasePath, setUriParams } from '@common/utils';
 
 export class PollaGateway
@@ -36,4 +41,15 @@ export class PollaGateway
 
     return HTTP.request<IGetPotResponse>({ config });
   }
+
+
+  static async getTicketHistory(hippodromeId: string)
+  {
+    const config: AxiosRequestConfig = {
+      ... setBasePath(setUriParams(this.routes.hippodromeHistory, { id: hippodromeId }), this.basePath)
+    };
+
+    return HTTP.request<IGetTicketHistoryResponse>({ config });
+  }
+
 }

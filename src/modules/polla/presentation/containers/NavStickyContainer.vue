@@ -1,7 +1,12 @@
 <template>
-  <q-page-sticky expand position="top" class="wp-100 bg-app-primary q-py-md" style="margin-top: -10px">
-    <q-toolbar class="flex column" style="align-items: end !important;">
-      <div style="font-size: clamp(1.5vw, 3.5vw, 4vw)" class="flex wp-100 justify-between items-center q-mt-sm">
+  <q-page-sticky
+    expand position="top" class="wp-100 bg-app-primary q-py-md" style="margin-top: -10px">
+    <q-toolbar
+      :class="{
+        'wp-50 q-mx-auto' : $q.screen.gt.md
+      }"
+      class="flex column" style="align-items: end !important;">
+      <div style="font-size: clamp(.5rem, 1rem, 2rem)" class="flex wp-100 justify-between items-center q-mt-sm">
         <AppSelectComponent
           :data="selectHippodromes"
           :defaultSelect="selectHippodromes[0]"
@@ -12,7 +17,7 @@
         <OptionSwitchComponent :defaultOption="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
       </div>
 
-      <div style="font-size: clamp(1.5vw, 3.5vw, 4vw)" class="flex wp-100 justify-between items-center q-mt-md ">
+      <div style="font-size: clamp(.5rem, 1rem, 2rem)" class="section-two mt-16">
         <AccumulatedAmountComponent :amount="pot" :type="'Pote'"/>
         <AccumulatedAmountComponent :amount="10" type="Ticket"/>
       </div>
@@ -102,3 +107,25 @@ onMounted(async() =>
 });
 
 </script>
+
+<style scoped lang="scss">
+
+.section-one {
+  display: grid;
+  //column-gap: 14rem;
+  //row-gap: 1rem;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.section-two {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  width: 100%;
+  direction: rtl;
+}
+</style>
+

@@ -1,5 +1,9 @@
 <template>
-  <q-header reveal class="bg-app-primary ">
+  <q-header reveal class="bg-app-primary"
+   :class="{
+      'wp-50 q-mx-auto' : $q.screen.gt.md
+    }"
+  >
     <q-toolbar class="flex justify-between wp-100 q-pt-md q-pb-none q-px-md">
       <q-toolbar-title>
         <q-img

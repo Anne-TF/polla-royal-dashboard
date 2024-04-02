@@ -11,6 +11,10 @@ export const pollaRoutes =  {
   pot: {
     url: 'apiPolla/pot/:id',
     method: 'GET'
+  },
+  hippodromeHistory: {
+    url: 'apiPolla/history/:id',
+    method: 'GET'
   }
 };
 

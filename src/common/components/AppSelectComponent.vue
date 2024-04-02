@@ -1,10 +1,15 @@
 <template>
-  <div class="wp-40">
-    <q-btn @click="parxRacingDialog = true" :ripple="false" class="fs-15 wp-100" dense flat no-caps>
-      <span v-if="selectedOption.name" class="text-semi-bold text-app-secondary-400 wp-60 ellipsis">{{ selectedOption.name }}</span>
-      <q-skeleton v-else type="text" class="wp-60" style="height: 20px"/>
-      <span v-if="selectedOption?.suffix" class="text-app-primary-50 fs-12 q-mx-xs text-medium">{{selectedOption.suffix}}</span>
-      <q-icon size="1.2em" style="margin-top: -5px;" name="arrow_drop_down" class="text-app-primary-200"/>
+    <q-btn @click="parxRacingDialog = true" align="between" :ripple="false" dense flat no-caps>
+      <div class="ellipsis w-90">
+        <span v-if="selectedOption.name" class="text-semi-bold text-app-secondary-400 ">{{ selectedOption.name }}</span>
+        <q-skeleton v-else type="text" class="wp-60" style="height: 20px"/>
+      </div>
+
+      <div>
+       <span v-if="selectedOption?.suffix" class="text-app-primary-50 fs-12 q-mx-xs text-medium">{{selectedOption.suffix}}</span>
+        <q-icon size="1.2em" style="margin-top: -5px;" name="arrow_drop_down" class="text-app-primary-200"/>
+      </div>
+
       <q-separator class="wp-100 separator-app-primary-800 q-mt-xs" size="2px"/>
     </q-btn>
 
@@ -60,7 +65,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-  </div>
 </template>
 
 <script setup lang="ts">

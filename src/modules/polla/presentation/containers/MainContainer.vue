@@ -1,13 +1,19 @@
 <template>
-    <div v-show="tapOptionSelected === 'play'" :key="`play-${hippodromeId}`">
+    <div v-show="tapOptionSelected === 'play'" :key="`play-${hippodromeId}`" class="cards">
       <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
-      <RaceCardComponent v-show="!loading" v-for="(race, index) in races" :key="`${index}-${race.id}`" class="mb-10" :race/>
+      <RaceCardComponent v-show="!loading" v-for="(race, index) in races" :key="`${index}-${race.id}`" :race/>
     </div>
 
     <div v-show="tapOptionSelected === 'history'" :key="`history-${hippodromeId}`">
       <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
-      <span v-show="!loading">historial</span>
-      <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
+<!--      <span v-show="!loading" v-for="history in ticketHistory" :key="history.ticket" class="block">{{history.ticket}}</span>-->
+
+      <q-card v-show="!loading" v-for="history in ticketHistory" :key="history.ticket" class="bg-app-primary-100 wp-100 br-16 race my-10">
+        <q-card-section class="fs-16">
+          <span class="text-semi-bold text-app-primary">{{history.ticket}}</span>
+        </q-card-section>
+      </q-card>
+
     </div>
 </template>
 
@@ -15,15 +21,17 @@
 import { ref, watch } from 'vue';
 import { Race } from '@modules/polla/domain/models';
 import { usePollaStore } from '@modules/polla/domain/store';
-import { GetRacesUseCase } from '@modules/polla/domain/useCases';
+import { GetRacesUseCase, GetTicketHistoryUseCase } from '@modules/polla/domain/useCases';
 import { RaceCardComponent } from '@modules/polla/presentation/components';
 import { OptionsTap } from '@modules/polla/domain/store/types';
+import { ITicket } from '@modules/polla/infrastructure/interfaces';
 
 const pollaStore = usePollaStore();
 const loading = ref<boolean>(true);
 const tapOptionSelected = ref<OptionsTap>('play');
 const races = ref<Race[]>([]);
 const hippodromeId = ref<string>('');
+const ticketHistory = ref<ITicket[]>([]);
 
 watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 {
@@ -33,21 +41,37 @@ watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 
   if (newValue?.allowsPlay)
   {
-    races.value = await GetRacesUseCase.handle(newValue);
+    const [_races, _ticketHistory] = await Promise.all([
+      GetRacesUseCase.handle(newValue),
+      GetTicketHistoryUseCase.handle(newValue.id)
+    ]);
+
+    races.value = _races;
+    ticketHistory.value = _ticketHistory;
   }
 
-  if (!newValue?.allowsPlay)
+  if (!newValue?.allowsPlay && newValue?.id)
   {
-    // TODO: obtener el historial de apuestas
+    ticketHistory.value = await GetTicketHistoryUseCase.handle(newValue.id);
   }
 
   loading.value = false;
 
 }, { immediate: true, deep: true });
 
-watch(() => pollaStore.OptionSelected, (newValue) =>
+watch(() => pollaStore.OptionSelected, async(newValue) =>
 {
   tapOptionSelected.value = newValue;
 }, { immediate: true, deep: true });
 </script>
+
+<style scoped lang="scss">
+
+.cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
+
+</style>
 

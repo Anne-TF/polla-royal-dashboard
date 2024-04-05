@@ -1,6 +1,6 @@
 <template>
   <div style="direction: ltr">
-    <p class="q-mb-none bg-app-primary-900 border-app-primary-800 q-px-sm q-py-xs br-8 ">
+    <p class="q-mb-none bg-app-primary-950 border-app-primary-800 q-px-sm q-py-xs br-8 ">
       <span class="text-app-primary-100 q-pr-sm" v-text="type" />
       <span class="text-app-secondary q-pr-sm">$ {{ formattedAmount }}</span>
     </p>

@@ -29,6 +29,20 @@ $app-secondary--tones: (
   950: #192a09
 );
 
+$app-tertiary: #120d3c;
+$app-tertiary--tones: (
+  50: #eaefff,
+  100: #d9e1ff,
+  200: #bac6ff,
+  300: #91a0ff,
+  400: #656cff,
+  500: #4942ff,
+  600: #3b21ff,
+  700: #3316ec,
+  800: #2915be,
+  900: #261b94,
+  950: $app-tertiary
+);
 
 $app-danger: #f04438;
 $app-info: #2e90fa;

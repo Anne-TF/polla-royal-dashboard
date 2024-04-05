@@ -7,6 +7,7 @@
 $colors: (
   'primary': $app-primary,
   'secondary': $app-secondary,
+  'tertiary': $app-tertiary,
   'danger': $app-danger,
   'info': $app-info,
   'warning': $app-warning,
@@ -16,6 +17,7 @@ $colors: (
 $tones: (
   'primary': $app-primary--tones,
   'secondary': $app-secondary--tones,
+  'tertiary': $app-tertiary--tones,
 );
 
 // COLOR RELATED CLASSED

@@ -1,10 +1,10 @@
 <template>
-  <q-header reveal class="bg-app-primary"
-   :class="{
+  <q-header reveal class="bg-app-tertiary" >
+    <q-toolbar class="flex justify-between q-pt-md q-pb-none q-px-md"
+               :class="{
       'wp-50 q-mx-auto' : $q.screen.gt.md
     }"
-  >
-    <q-toolbar class="flex justify-between wp-100 q-pt-md q-pb-none q-px-md">
+    >
       <q-toolbar-title>
         <q-img
           :src="'/images/horse.svg'"
@@ -17,3 +17,6 @@
     </q-toolbar>
   </q-header>
 </template>
+
+<script setup lang="ts">
+</script>

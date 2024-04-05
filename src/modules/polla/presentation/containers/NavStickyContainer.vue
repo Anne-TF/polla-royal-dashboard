@@ -1,6 +1,11 @@
 <template>
   <q-page-sticky
-    expand position="top" class="wp-100 bg-app-primary q-py-md" style="margin-top: -10px">
+    expand position="top" class="wp-100 q-py-md pb-40"
+    style="
+      background: linear-gradient(180deg, rgba(18,13,60,1) 80%, rgba(18,13,60,0.6362920168067228) 90%, rgba(18,13,60,0) 95%);
+      margin-top: -10px
+    "
+  >
     <q-toolbar
       :class="{
         'wp-50 q-mx-auto' : $q.screen.gt.md
@@ -17,14 +22,12 @@
         <OptionSwitchComponent :defaultOption="switchOptions.default" :options="switchOptions.options" @onSwitch="handleSwitch"/>
       </div>
 
-      <div style="font-size: clamp(.5rem, 1rem, 2rem)" class="section-two mt-16">
+      <div style="font-size: clamp(.5rem, 1.2rem, 2rem)" class="section-two mt-16">
         <AccumulatedAmountComponent :amount="pot" :type="'Pote'"/>
         <AccumulatedAmountComponent :amount="10" type="Ticket"/>
       </div>
-
     </q-toolbar>
   </q-page-sticky>
-
 </template>
 
 <script setup lang="ts">
@@ -110,20 +113,11 @@ onMounted(async() =>
 
 <style scoped lang="scss">
 
-.section-one {
-  display: grid;
-  //column-gap: 14rem;
-  //row-gap: 1rem;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  width: 100%;
-  text-overflow: ellipsis;
-}
 
 .section-two {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
   width: 100%;
   direction: rtl;
 }

@@ -13,9 +13,9 @@
       <q-separator class="wp-100 separator-app-primary-800 q-mt-xs" size="2px"/>
     </q-btn>
 
-    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'default'" v-model="parxRacingDialog">
+    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'standard'" v-model="parxRacingDialog">
       <q-card flat class="bg-app-primary"
-              :class="{ 'hv-90' : $q.screen.height <= 800, 'hv-45' : $q.screen.height > 800 }"
+              :class="{ 'hv-90' : $q.screen.height <= 800, 'hv-45' : $q.screen.height > 800, 'wp-40' : $q.screen.gt.sm }"
               :style="`border-radius: ${$q.screen.lt.md ? '16px 16px 0 0' : '32px'} !important;`">
 
         <q-card-section class="flex items-center justify-between">
@@ -43,7 +43,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'default'" v-model="confirmDialog">
+    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'standard'" v-model="confirmDialog">
       <q-card flat class="bg-app-primary-100 text-app-primary flex column flex-center"
               :class="{ 'hv-50' : $q.screen.height <= 800, 'hv-30' : $q.screen.height > 800 }"
               :style="`border-radius: ${$q.screen.lt.md ? '16px 16px 0 0' : '32px'} !important;`">

@@ -4,16 +4,9 @@
       <RaceCardComponent v-show="!loading" v-for="(race, index) in races" :key="`${index}-${race.id}`" :race/>
     </div>
 
-    <div v-show="tapOptionSelected === 'history'" :key="`history-${hippodromeId}`">
+    <div v-show="tapOptionSelected === 'history'" :key="`history-${hippodromeId}`" class="cards">
       <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
-<!--      <span v-show="!loading" v-for="history in ticketHistory" :key="history.ticket" class="block">{{history.ticket}}</span>-->
-
-      <q-card v-show="!loading" v-for="history in ticketHistory" :key="history.ticket" class="bg-app-primary-100 wp-100 br-16 race my-10">
-        <q-card-section class="fs-16">
-          <span class="text-semi-bold text-app-primary">{{history.ticket}}</span>
-        </q-card-section>
-      </q-card>
-
+      <TicketCardComponent v-show="!loading" v-for="ticket in ticketHistory" :key="ticket.ticket" :ticket />
     </div>
 </template>
 
@@ -22,7 +15,7 @@ import { ref, watch } from 'vue';
 import { Race } from '@modules/polla/domain/models';
 import { usePollaStore } from '@modules/polla/domain/store';
 import { GetRacesUseCase, GetTicketHistoryUseCase } from '@modules/polla/domain/useCases';
-import { RaceCardComponent } from '@modules/polla/presentation/components';
+import { RaceCardComponent, TicketCardComponent } from '@modules/polla/presentation/components';
 import { OptionsTap } from '@modules/polla/domain/store/types';
 import { ITicket } from '@modules/polla/infrastructure/interfaces';
 
@@ -72,6 +65,5 @@ watch(() => pollaStore.OptionSelected, async(newValue) =>
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 }
-
 </style>
 

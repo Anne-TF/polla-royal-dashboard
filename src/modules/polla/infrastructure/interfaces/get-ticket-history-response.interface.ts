@@ -1,7 +1,7 @@
 import { IAPIResponse } from '@common/interfaces';
 export interface ISelectionRunner {
   runnerId: number;
-  programNumber: number;
+  programNumber: string;
   position: number;
   points: number;
 }
@@ -12,7 +12,7 @@ export interface ITicket {
   amount: number;
   status: number;
   payout: number;
-  selections: ISelectionRunner[];
+  selections: Record<string, ISelectionRunner>;
   pointsTicket: number;
 }
 

@@ -3,7 +3,7 @@
 
     <q-card-section class="fs-16 history">
       <div class="flex column items-start ">
-        <span class="text-semi-bold text-grey-14 fs-16">Tiket: <span class="text-semi-bold text-app-primary"> {{ticket.ticket}}</span> </span>
+        <span class="text-semi-bold text-grey-14 fs-16">Ticket: <span class="text-semi-bold text-app-primary"> {{ticket.ticket}}</span> </span>
         <span class="text-semi-bold text-grey-14 fs-14">Fecha: <span class="text-semi-bold text-app-primary">{{ticket.date}}</span></span>
       </div>
       <div class="flex column items-end">

@@ -1,5 +1,5 @@
 <template>
-    <q-btn @click="parxRacingDialog = true" align="between" :ripple="false" dense flat no-caps>
+  <q-btn @click="parxRacingDialog = true" align="between" :ripple="false" dense flat no-caps>
       <div class="ellipsis w-90">
         <span v-if="selectedOption.name" class="text-semi-bold text-app-secondary-400 ">{{ selectedOption.name }}</span>
         <q-skeleton v-else type="text" class="wp-60" style="height: 20px"/>
@@ -11,9 +11,31 @@
       </div>
 
       <q-separator class="wp-100 separator-app-primary-800 q-mt-xs" size="2px"/>
+
+      <q-menu v-if="$q.screen.gt.md || $q.screen.name === 'md'"
+              fit anchor="bottom left"
+              self="top start"
+              class="bg-app-primary fs-16 text-medium shadow-13 br-8 no-scroll"
+              max-height="40vh"
+              min-width="30vh"
+      >
+        <q-input class="my-10 mx-5" standout dark rounded v-model="search" @update:model-value="onSearch($event as string)" dense placeholder="Buscar" style="width: auto"/>
+        <q-scroll-area style="height: 30vh; max-height: 40vh" >
+          <q-list class="q-pr-sm">
+            <q-item v-for="option of _data" :key="option.value" clickable v-ripple class="br-50 text-medium fs-14 my-10 mx-5"
+                    @click="onSelect(option)" :active="selectedOption.value === option.value" active-class="bg-app-primary-900 text-app-secondary fs-14 text-semi-bold" >
+              <q-item-section>
+                  <span v-html="option.name.toLowerCase().includes(search.toLowerCase()) && search ?
+                      applyHighlight(option.name, search, 'text-semi-bold text-yellow') :
+                  option.name" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </q-menu>
     </q-btn>
 
-    <q-dialog :maximized="$q.screen.lt.md" :position="$q.screen.lt.md ? 'bottom' : 'standard'" v-model="parxRacingDialog">
+    <q-dialog v-if="$q.screen.lt.md" :maximized="$q.screen.lt.md" :position="'bottom'" v-model="parxRacingDialog">
       <q-card flat class="bg-app-primary"
               :class="{ 'hv-90' : $q.screen.height <= 800, 'hv-45' : $q.screen.height > 800, 'wp-40' : $q.screen.gt.sm }"
               :style="`border-radius: ${$q.screen.lt.md ? '16px 16px 0 0' : '32px'} !important;`">
@@ -31,14 +53,18 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none overflow-auto hp-70">
-          <q-item v-for="option of _data" :key="option.value" clickable v-ripple class="br-50 text-medium fs-14"
-                  @click="onSelect(option)" :active="selectedOption.value === option.value" active-class="bg-app-primary-900 text-app-secondary fs-14 text-semi-bold" >
-            <q-item-section>
-              <span v-html="option.name.toLowerCase().includes(search.toLowerCase()) && search ?
-                  applyHighlight(option.name, search, 'text-semi-bold text-yellow') :
-              option.name" />
-            </q-item-section>
-          </q-item>
+          <q-scroll-area style="height: 100%; max-height: 100%" >
+            <q-list class="q-pr-sm">
+              <q-item v-for="option of _data" :key="option.value" clickable v-ripple class="br-50 text-medium fs-14 my-10 mx-5"
+                      @click="onSelect(option)" :active="selectedOption.value === option.value" active-class="bg-app-primary-900 text-app-secondary fs-14 text-semi-bold" >
+                <q-item-section>
+                  <span v-html="option.name.toLowerCase().includes(search.toLowerCase()) && search ?
+                      applyHighlight(option.name, search, 'text-semi-bold text-yellow') :
+                  option.name" />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-scroll-area>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -81,6 +107,22 @@ interface IOption {
 const emit = defineEmits<{
   (event: 'onSelect', value: string): void;
 }>();
+
+const thumbStyle = {
+  right: '4px',
+  borderRadius: '5px',
+  backgroundColor: '#027be3',
+  width: '5px',
+  opacity: 0.75
+};
+
+const barStyle = {
+  right: '2px',
+  borderRadius: '9px',
+  backgroundColor: '#027be3',
+  width: '9px',
+  opacity: 0.2
+};
 
 
 const props = defineProps({

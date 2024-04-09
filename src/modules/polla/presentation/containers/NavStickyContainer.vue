@@ -14,7 +14,7 @@
       <div style="font-size: clamp(.5rem, 1rem, 2rem)" class="flex wp-100 justify-between items-center q-mt-sm">
         <AppSelectComponent
           :data="selectHippodromes"
-          :defaultSelect="selectHippodromes[0]"
+          :defaultSelect="hippodromeSelected"
           :allowChange="!pollaStore.Betting"
           :confirmationMessage="'¿Estás seguro de cambiar de hipódromo? Posees una apuesta en curso.'"
           @onSelect="handleSelect"
@@ -37,11 +37,16 @@ import { AccumulatedAmountComponent } from '../components';
 import { GetHippodromesUseCase, GetPotUseCase } from '@modules/polla/domain/useCases';
 import { usePollaStore } from '@modules/polla/domain/store';
 import { OptionsTap } from '@modules/polla/domain/store/types';
+import { useRouter } from 'vue-router';
+import { Hippodrome } from '@modules/polla/domain/models';
+
+const $router = useRouter();
 
 const pollaStore = usePollaStore();
 
 const selectHippodromes = ref([]);
 const pot = ref(0);
+const hippodromeSelected = ref();
 
 const switchOptions = reactive({
   default: 'play',
@@ -53,20 +58,30 @@ const switchOptions = reactive({
     },
     {
       name: 'Historial',
-      value: 'history'
+      value: 'history',
+      disabled: false
     }
   ]
 });
 
-const handleSwitch = (selectedOption: OptionsTap) =>
+const options = ['play', 'history'];
+
+const handleSwitch = async(selectedOption: OptionsTap) =>
 {
   pollaStore.setOptionSelected(selectedOption);
 };
 
-const handleSelect = (selectedOption: string) =>
+const handleSelect = async(selectedOption: string) =>
 {
   pollaStore.setSelectedHippodrome(selectedOption);
+  await $router.replace({ query: { ...$router.currentRoute.value.query, hippodrome: selectedOption } });
 };
+
+const mapHippodrome = (hippodrome: Hippodrome) => ({
+  name: hippodrome.name,
+  value: hippodrome.id,
+  suffix: '19/03'
+});
 
 watch(() => pollaStore.Hippodromes, (newValue) =>
 {
@@ -75,11 +90,9 @@ watch(() => pollaStore.Hippodromes, (newValue) =>
     return;
   }
 
-  selectHippodromes.value = newValue.map((hippodrome) => ({
-    name: hippodrome.name,
-    value: hippodrome.id,
-    suffix: '19/03'
-  }));
+  selectHippodromes.value = newValue.map(mapHippodrome);
+
+  hippodromeSelected.value = selectHippodromes.value[0];
 
   handleSelect(selectHippodromes.value[0].value);
 }, { immediate: true, deep: true });
@@ -94,7 +107,6 @@ watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
   {
     await GetPotUseCase.handle(newValue.id);
   }
-
 }, { immediate: true, deep: true });
 
 watch(() => pollaStore.Pot, (newValue) =>
@@ -102,18 +114,37 @@ watch(() => pollaStore.Pot, (newValue) =>
   pot.value = newValue;
 }, { immediate: true, deep: true });
 
+watch(() => pollaStore.OptionSelected, async(newValue) =>
+{
+  await $router.replace({ query: { ...$router.currentRoute.value.query, tab: newValue  } });
+});
+
 onMounted(async() =>
 {
   await Promise.all([
     GetHippodromesUseCase.handle()
   ]);
+
+  const optionTab = $router.currentRoute.value.query?.tab.toString() as OptionsTap;
+  const hippodromeId = $router.currentRoute.value.query?.hippodrome as string;
+
+  if (options.includes(optionTab))
+  {
+    switchOptions.default = optionTab;
+    await handleSwitch(optionTab);
+  }
+
+  if (hippodromeId)
+  {
+    const _hippodrome_ = pollaStore.Hippodromes.find((_hippodrome) => _hippodrome.id === hippodromeId);
+    hippodromeSelected.value = mapHippodrome(_hippodrome_);
+    await handleSelect(hippodromeId);
+  }
 });
 
 </script>
 
 <style scoped lang="scss">
-
-
 .section-two {
   display: grid;
   gap: 1rem;

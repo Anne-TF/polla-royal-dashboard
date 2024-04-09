@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div v-show="tapOptionSelected === 'play'" :key="`play-${hippodromeId}`" class="cards">
       <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
       <RaceCardComponent v-show="!loading" v-for="(race, index) in races" :key="`${index}-${race.id}`" :race/>
@@ -8,6 +9,7 @@
       <q-skeleton v-if="loading" b class="mb-10" :count="3" height="100" />
       <TicketCardComponent v-show="!loading" v-for="ticket in ticketHistory" :key="ticket.ticket" :ticket />
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -39,7 +41,7 @@ watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
       GetTicketHistoryUseCase.handle(newValue.id)
     ]);
 
-    races.value = _races;
+    races.value = _races ?? [];
     ticketHistory.value = _ticketHistory;
   }
 

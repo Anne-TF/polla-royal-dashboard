@@ -43,11 +43,6 @@ const props = defineProps({
 const { options, defaultOption } = toRefs(props);
 const selectedOption = ref(options.value.find(option => option.value === defaultOption.value));
 
-onMounted(() =>
-{
-  emit('onSwitch', selectedOption.value.value);
-});
-
 const selectOption = (option: { name: string, value: string }) =>
 {
   selectedOption.value = option;

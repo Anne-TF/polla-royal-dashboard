@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@common/layouts/MainLayout.vue'),
     children: [
       {
-        path: '',
+        path: 'polla',
         component: () => import('@modules/polla/presentation/pages/MainPage.vue')
       }
     ],
@@ -15,7 +15,6 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: false
     }
   },
-
   // Always leave this as last one,
   // but you can also remove it
   {

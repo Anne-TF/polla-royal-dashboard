@@ -9,7 +9,11 @@ const actions: PiniaActions = {
   {
     this.bet.hippodromeId = id;
     this.selectedHippodrome = this.hippodromes.find((h) => h.id === id) || null;
-    this.optionSelected = this.selectedHippodrome.allowsPlay ? 'play' : 'history';
+
+    if (!this.selectedHippodrome.allowsPlay)
+    {
+      this.optionSelected = 'history';
+    }
 
     this.bet.races  = this.selectedHippodrome.races.reduce((prev, curr) =>
     {

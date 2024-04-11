@@ -29,7 +29,7 @@
         <q-card class="bg-app-primary-100">
           <q-card-section class="fs-16 history">
             <div class="flex column items-start ">
-              <span class="text-semi-bold text-grey-14 fs-16">Tiket: <span class="text-semi-bold text-app-primary"> {{ticket.ticket}}</span> </span>
+              <span class="text-semi-bold text-grey-14 fs-16">Ticket: <span class="text-semi-bold text-app-primary"> {{ticket.ticket}}</span> </span>
               <span class="text-semi-bold text-grey-14 fs-14">Fecha: <span class="text-semi-bold text-app-primary">{{ticket.date}}</span></span>
             </div>
             <div class="flex column items-end">
@@ -54,7 +54,7 @@
                 <span class="fs-12">#</span>{{key+1}}</span>
                   <q-separator class="separator-app-primary-800" size="2px" style="width: 5.5em"/>
                 </div>
-                <RunnerBoxComponent :runner="getRunner(id)" :modelValue="[id]" size="40" />
+                <RunnerBoxComponent :runner="getRunner(id)" :modelValue="[id]" :size="40" />
               </div>
             </div>
           </q-card-section>

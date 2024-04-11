@@ -5,6 +5,7 @@ import { axiosCatchError, defaultCatchError } from '@common/utils';
 import { PollaGateway } from '@modules/polla/infrastructure/gateways';
 import { Hippodrome } from '@modules/polla/domain/models';
 import { usePollaStore } from '@modules/polla/domain/store';
+import { useAuthStore } from '@modules/auth/domain/store';
 
 export class GetHippodromesUseCase
 {
@@ -12,8 +13,9 @@ export class GetHippodromesUseCase
   @Catch(AxiosError, axiosCatchError)
   static async handle()
   {
+    const authStore = useAuthStore();
 
-    const response  = (await PollaGateway.getHippodromes()).data.data;
+    const response  = (await PollaGateway.getHippodromes(authStore.GetToken)).data.data;
 
     const hippodromes = response.map((d) => (new Hippodrome(d)));
 

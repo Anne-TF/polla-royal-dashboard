@@ -31,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import { OptionSwitchComponent, AppSelectComponent } from '@common/components';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { AppSelectComponent, OptionSwitchComponent } from '@common/components';
+import { onBeforeMount, reactive, ref, watch } from 'vue';
 import { AccumulatedAmountComponent } from '../components';
 import { GetHippodromesUseCase, GetPotUseCase } from '@modules/polla/domain/useCases';
 import { usePollaStore } from '@modules/polla/domain/store';
@@ -68,13 +68,16 @@ const options = ['play', 'history'];
 
 const handleSwitch = async(selectedOption: OptionsTap) =>
 {
+  selectedOption = pollaStore.SelectedHippodrome.allowsPlay ? selectedOption : 'history';
+  switchOptions.default = selectedOption;
   pollaStore.setOptionSelected(selectedOption);
+  await $router.replace({  path: $router.currentRoute.value.path, query: { ...$router.currentRoute.value.query, tab: selectedOption  } });
 };
 
 const handleSelect = async(selectedOption: string) =>
 {
   pollaStore.setSelectedHippodrome(selectedOption);
-  await $router.replace({ query: { ...$router.currentRoute.value.query, hippodrome: selectedOption } });
+  await $router.replace({ path: $router.currentRoute.value.path, query: { ...$router.currentRoute.value.query, hippodrome: selectedOption } });
 };
 
 const mapHippodrome = (hippodrome: Hippodrome) => ({
@@ -82,6 +85,20 @@ const mapHippodrome = (hippodrome: Hippodrome) => ({
   value: hippodrome.id,
   suffix: '19/03'
 });
+
+const getHippodrome = (hippodromes: Hippodrome[]) =>
+{
+  const hippodromeId = $router.currentRoute.value.query?.hippodrome;
+
+  if (hippodromeId)
+  {
+    return mapHippodrome(hippodromes.find(hippodrome => hippodrome.id === hippodromeId));
+  }
+
+  return mapHippodrome(hippodromes[0]);
+};
+
+// TODO: revisar el cambio de la url, esta no se esta haciendo correctamente !
 
 watch(() => pollaStore.Hippodromes, (newValue) =>
 {
@@ -92,10 +109,10 @@ watch(() => pollaStore.Hippodromes, (newValue) =>
 
   selectHippodromes.value = newValue.map(mapHippodrome);
 
-  hippodromeSelected.value = selectHippodromes.value[0];
+  hippodromeSelected.value = getHippodrome(newValue);
 
-  handleSelect(selectHippodromes.value[0].value);
-}, { immediate: true, deep: true });
+  handleSelect(hippodromeSelected.value.value);
+}, { deep: true });
 
 watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
 {
@@ -107,38 +124,35 @@ watch(() => pollaStore.SelectedHippodrome, async(newValue) =>
   {
     await GetPotUseCase.handle(newValue.id);
   }
-}, { immediate: true, deep: true });
+}, { deep: true });
 
 watch(() => pollaStore.Pot, (newValue) =>
 {
   pot.value = newValue;
-}, { immediate: true, deep: true });
+}, { deep: true });
 
-watch(() => pollaStore.OptionSelected, async(newValue) =>
-{
-  await $router.replace({ query: { ...$router.currentRoute.value.query, tab: newValue  } });
-});
-
-onMounted(async() =>
+onBeforeMount(async() =>
 {
   await Promise.all([
     GetHippodromesUseCase.handle()
   ]);
 
-  const optionTab = $router.currentRoute.value.query?.tab.toString() as OptionsTap;
   const hippodromeId = $router.currentRoute.value.query?.hippodrome as string;
-
-  if (options.includes(optionTab))
-  {
-    switchOptions.default = optionTab;
-    await handleSwitch(optionTab);
-  }
+  const optionTab = $router.currentRoute.value.query?.tab as OptionsTap;
 
   if (hippodromeId)
   {
-    const _hippodrome_ = pollaStore.Hippodromes.find((_hippodrome) => _hippodrome.id === hippodromeId);
-    hippodromeSelected.value = mapHippodrome(_hippodrome_);
+    hippodromeSelected.value = getHippodrome(pollaStore.Hippodromes);
     await handleSelect(hippodromeId);
+  }
+
+  if (optionTab && options.includes(optionTab))
+  {
+    await handleSwitch(optionTab);
+  }
+  else
+  {
+    await handleSwitch('play');
   }
 });
 

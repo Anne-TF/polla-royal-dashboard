@@ -1,4 +1,4 @@
-const { bool, cleanEnv, host, port, str } = require('envalid');
+const { bool, cleanEnv, host, port, str, url } = require('envalid');
 
 const validateEnv =  (config) =>
 {
@@ -16,7 +16,9 @@ const validateEnv =  (config) =>
     API_USE_SSL: bool({ default: false }),
     API_WITH_CREDENTIALS: bool({ default: false }),
 
-    USE_LOCAL_STORAGE: bool({ default: false })
+    USE_LOCAL_STORAGE: bool({ default: false }),
+
+    S3_URL: url()
   });
 
   config = { ...config, ...clean };

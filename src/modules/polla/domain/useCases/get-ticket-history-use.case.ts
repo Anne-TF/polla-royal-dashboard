@@ -3,6 +3,7 @@ import { Catch } from '@common/decorators/catch.decorator';
 import { AxiosError } from 'axios';
 import { axiosCatchError, defaultCatchError } from '@common/utils';
 import { PollaGateway } from '@modules/polla/infrastructure/gateways';
+import { useAuthStore } from '@modules/auth/domain/store';
 
 export class GetTicketHistoryUseCase
 {
@@ -10,6 +11,7 @@ export class GetTicketHistoryUseCase
   @Catch(AxiosError, axiosCatchError)
   static async handle(hippodromeId: string)
   {
-    return (await PollaGateway.getTicketHistory(hippodromeId)).data.data;
+    const authStore = useAuthStore();
+    return (await PollaGateway.getTicketHistory(hippodromeId, authStore.GetToken)).data.data;
   }
 }

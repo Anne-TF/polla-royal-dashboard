@@ -9,47 +9,48 @@ import {
   IGetRacesResponse
 } from '@modules/polla/infrastructure/interfaces';
 import { setBasePath, setUriParams } from '@common/utils';
+import { useAuthStore } from '@modules/auth/domain/store';
 
 export class PollaGateway
 {
   private static routes = pollaRoutes;
   private static basePath = configuration().server.basePath;
 
-  static async getHippodromes()
+  static async getHippodromes(token: string)
   {
     const config: AxiosRequestConfig = {
       ... setBasePath(this.routes.hippodromes, this.basePath)
     };
 
-    return HTTP.request<IGetHippodromesResponse>({ config });
+    return HTTP.request<IGetHippodromesResponse>({ config, token });
   }
 
-  static async getRaces(hippodromeId: string)
+  static async getRaces(hippodromeId: string, token: string)
   {
     const config: AxiosRequestConfig = {
       ... setBasePath(setUriParams(this.routes.races, { id: hippodromeId }), this.basePath)
     };
 
-    return HTTP.request<IGetRacesResponse>({ config });
+    return HTTP.request<IGetRacesResponse>({ config, token });
   }
 
-  static async getPot(hippodromeId: string)
+  static async getPot(hippodromeId: string, token: string)
   {
     const config: AxiosRequestConfig = {
       ... setBasePath(setUriParams(this.routes.pot, { id: hippodromeId }), this.basePath)
     };
 
-    return HTTP.request<IGetPotResponse>({ config });
+    return HTTP.request<IGetPotResponse>({ config, token });
   }
 
 
-  static async getTicketHistory(hippodromeId: string)
+  static async getTicketHistory(hippodromeId: string, token: string)
   {
     const config: AxiosRequestConfig = {
       ... setBasePath(setUriParams(this.routes.hippodromeHistory, { id: hippodromeId }), this.basePath)
     };
 
-    return HTTP.request<IGetTicketHistoryResponse>({ config });
+    return HTTP.request<IGetTicketHistoryResponse>({ config, token });
   }
 
 }

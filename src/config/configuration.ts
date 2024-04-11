@@ -13,5 +13,6 @@ export default (): IConfig => ({
     useSSL: process.env.API_USE_SSL,
     withCredentials: process.env.API_WITH_CREDENTIALS
   },
-  useLocalStorage: process.env.USE_LOCAL_STORAGE
+  useLocalStorage: process.env.USE_LOCAL_STORAGE,
+  s3Url: process.env.S3_URL
 });

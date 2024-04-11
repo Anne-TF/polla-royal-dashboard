@@ -19,4 +19,5 @@ export interface IConfig {
   app: IAppConfig;
   server: IServerConfig;
   useLocalStorage: boolean;
+  s3Url: string;
 }

@@ -4,13 +4,13 @@ import state from './state';
 import getters from './getters';
 import actions from './actions';
 
-export const usePollaStore = defineStore('polla', {
+export const useAuthStore = defineStore('auth', {
   state,
   getters,
   actions,
-  persist: false
+  persist: true
 });
 
-export type PollaStore = typeof usePollaStore
+export type AuthStore = typeof useAuthStore
 
 

@@ -15,5 +15,7 @@ declare namespace NodeJS {
     API_WITH_CREDENTIALS: boolean;
 
     USE_LOCAL_STORAGE: boolean;
+
+    S3_URL: string;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen bg-app-primary text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-app-tertiary text-white text-center q-pa-md flex flex-center">
     <div>
       <div style="font-size: 30vh">
         404

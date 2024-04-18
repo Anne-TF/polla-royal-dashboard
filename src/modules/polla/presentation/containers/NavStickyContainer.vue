@@ -83,7 +83,7 @@ const handleSelect = async(selectedOption: string) =>
 const mapHippodrome = (hippodrome: Hippodrome) => ({
   name: hippodrome.name,
   value: hippodrome.id,
-  suffix: '19/03'
+  suffix: hippodrome.date
 });
 
 const getHippodrome = (hippodromes: Hippodrome[]) =>

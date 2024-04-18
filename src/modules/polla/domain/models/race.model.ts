@@ -12,19 +12,19 @@ export class Race
 {
   readonly id: string;
   readonly number: number;
-  readonly status: string;
+  readonly active: boolean;
   readonly runners: IRunner[];
 
   constructor(data: IRace)
   {
-    this.id = data.raceId;
-    this.number = parse(data.raceNumber);
-    this.status = data.statusRace;
-    this.runners = data.runners.map<IRunner>((runner) => ({
-      id: runner.runnerId,
-      programNumber: runner.programNumber,
-      number: parse(removeNonNumericCharacters(runner.programNumber)),
-      allow: parse(runner.runnerStatus) === 1
-    }));
+    this.id = data.id;
+    this.number = data.number;
+    this.active = data.active;
+
+    this.runners = data.runners.map<IRunner>((runner) =>
+    {
+      delete runner.name;
+      return runner;
+    });
   }
 }

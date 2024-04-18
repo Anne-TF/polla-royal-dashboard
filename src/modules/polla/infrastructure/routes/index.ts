@@ -1,19 +1,19 @@
 
 export const pollaRoutes =  {
   hippodromes: {
-    url: 'apiPolla/hipodromos',
+    url: 'apiPolla/hippodromes',
     method: 'GET'
   },
   races: {
-    url: 'apiPolla/race/:id',
+    url: 'apiPolla/hippodromes/:id/races',
     method: 'GET'
   },
   pot: {
-    url: 'apiPolla/pot/:id',
+    url: 'apiPolla/hippodromes/:id/pot',
     method: 'GET'
   },
   hippodromeHistory: {
-    url: 'apiPolla/history/:id',
+    url: 'apiPolla/hippodromes/:id/tickets-history',
     method: 'GET'
   }
 };

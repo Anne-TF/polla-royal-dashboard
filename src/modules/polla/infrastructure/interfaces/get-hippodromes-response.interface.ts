@@ -1,12 +1,12 @@
 import { IAPIResponse } from '@common/interfaces';
 
 export interface IHippodrome {
-  cardId: string;
-  cardName: string;
+  id: string;
+  name: string;
   firstRace: string;
   lastRace: string;
-  lastClosedRace: string;
-  statusPolla: string;
+  allowPlay: boolean;
+  races: string[];
 }
 
 export interface IGetHippodromesResponse extends IAPIResponse<IHippodrome[]> {}

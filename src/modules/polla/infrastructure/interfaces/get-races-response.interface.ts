@@ -1,16 +1,18 @@
 import { IAPIResponse } from '@common/interfaces';
 
 export interface IRunner {
-  runnerId: string;
+  id: string;
+  name: string;
   programNumber: string;
-  runnerStatus: string;
+  number: number;
+  allow: boolean;
 }
 
 export interface IRace {
-  cardId: string;
-  raceId: string;
-  raceNumber: string;
-  statusRace: string;
+  id: string;
+  hippodromeId: string;
+  number: number;
+  active: boolean;
   runners: IRunner[];
 }
 

@@ -10,8 +10,7 @@ const state = (): State =>
       hippodromeId: null,
       races: {}
     },
-    pot: 0,
-    ticket: 0
+    pot: 0
   };
 };
 

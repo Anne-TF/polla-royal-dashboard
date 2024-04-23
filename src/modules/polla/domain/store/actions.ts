@@ -35,9 +35,21 @@ const actions: PiniaActions = {
   {
     this.pot = value;
   },
-  setTicket(value)
+  setTicket(hippodromeId, value)
   {
-    this.ticket = value;
+    this.hippodromes = this.hippodromes.map((h) =>
+    {
+      if (h.id === hippodromeId)
+      {
+        h.ticket = value;
+      }
+      return h;
+    });
+
+    if (this.selectedHippodrome?.id === hippodromeId)
+    {
+      this.selectedHippodrome.ticket = value;
+    }
   }
 };
 

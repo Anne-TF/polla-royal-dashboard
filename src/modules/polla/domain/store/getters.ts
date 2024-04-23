@@ -27,7 +27,7 @@ const getters: PiniaGetters = {
   },
   Ticket: (state: State) =>
   {
-    return state.ticket;
+    return state.selectedHippodrome?.ticket;
   }
 };
 

@@ -1,9 +1,13 @@
 <template>
-  <div style="direction: ltr">
-    <p class="q-mb-none bg-app-primary-950 border-app-primary-800 q-px-sm q-py-xs br-8 ">
+  <div style="direction: ltr" >
+    <div class="q-mb-none bg-app-primary-950 border-app-primary-800 q-px-sm q-py-xs br-8 row no-wrap items-end">
       <span class="text-app-primary-100 q-pr-sm" v-text="type" />
-      <span class="text-app-secondary q-pr-sm">$ {{ formattedAmount }}</span>
-    </p>
+      <q-space />
+      <div class="overflow-auto text-right hide-scrollbar">
+        <span class="text-app-secondary"> {{ formattedAmount }} </span>
+      </div>
+      <span class="fs-12 ml-5">{{currency}}</span>
+    </div>
   </div>
 </template>
 
@@ -16,10 +20,15 @@ const props = defineProps({
     required: true,
     default: 0
   },
-  type: String
+  type: String,
+  currency: {
+    type: String,
+    required: false,
+    default: 'USD'
+  }
 });
 
-const { amount, type } = toRefs(props);
+const { amount, type, currency } = toRefs(props);
 const displayedAmount = ref(amount.value);
 const first = ref<boolean>(true);
 const intervalId: number | null | NodeJS.Timeout = null;

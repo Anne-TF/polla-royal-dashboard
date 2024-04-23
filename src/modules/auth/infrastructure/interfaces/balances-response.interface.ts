@@ -1,7 +1,6 @@
 import { IAPIResponse } from '@common/interfaces';
 
-export interface ILoginResponse  extends IAPIResponse<{
-  jwt: string;
+export interface IBalancesResponse  extends IAPIResponse<{
   balances: Record<string, number>;
   defaultCurrency: string;
 }> {}

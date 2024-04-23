@@ -33,6 +33,8 @@ export class LoginUseCase
     const authStore = useAuthStore();
 
     authStore.setToken(result.data.data.jwt);
+    authStore.setBalances(result.data.data.balances);
+    authStore.setDefaultCurrency(result.data.data.defaultCurrency);
 
     return result;
   }

@@ -23,8 +23,8 @@
       </div>
 
       <div style="font-size: clamp(.5rem, 1.2rem, 2rem)" class="section-two mt-16">
-        <AccumulatedAmountComponent :amount="pot" :type="'Pote'"/>
-        <AccumulatedAmountComponent :amount="10" type="Ticket"/>
+        <AccumulatedAmountComponent :amount="pot ?? 0" :type="'Pote'"/>
+        <AccumulatedAmountComponent :amount="pollaStore.Ticket?.amount ?? 0" type="Ticket"/>
       </div>
     </q-toolbar>
   </q-page-sticky>

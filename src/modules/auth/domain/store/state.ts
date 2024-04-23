@@ -3,7 +3,10 @@ import { State } from './types';
 const state = (): State =>
 {
   return {
-    prToken: null
+    prToken: null,
+    balances: null,
+    currencies: [],
+    defaultCurrency: null
   };
 };
 

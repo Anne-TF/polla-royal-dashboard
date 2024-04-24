@@ -24,7 +24,7 @@
 
       <div style="font-size: clamp(.5rem, 1.2rem, 2rem)" class="section-two mt-16">
         <AccumulatedAmountComponent :amount="pot ?? 0" :type="'Pote'"/>
-        <AccumulatedAmountComponent :amount="pollaStore.Ticket?.amount ?? 0" type="Ticket"/>
+        <AccumulatedAmountComponent :amount="pollaStore.Ticket?.amount ?? 0" type="Ticket" :currency="pollaStore.Ticket?.currency" />
       </div>
     </q-toolbar>
   </q-page-sticky>
@@ -39,9 +39,6 @@ import { usePollaStore } from '@modules/polla/domain/store';
 import { OptionsTap } from '@modules/polla/domain/store/types';
 import { useRouter } from 'vue-router';
 import { Hippodrome } from '@modules/polla/domain/models';
-import { AxiosError } from 'axios';
-import { onErrorPushToPage } from '@common/utils';
-import configuration from '@config/configuration';
 
 const $router = useRouter();
 

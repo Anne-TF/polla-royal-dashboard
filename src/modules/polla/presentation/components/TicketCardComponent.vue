@@ -99,7 +99,7 @@ const getRunner = (runnerId: string) =>
 
   return {
     id: runnerId,
-    programNumber: ticket.value.selections[runnerId].programNumber,
+    programNumber,
     number: parse(removeNonNumericCharacters(programNumber)),
     allow: true
   } as IRunner;

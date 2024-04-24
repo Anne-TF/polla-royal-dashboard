@@ -3,7 +3,7 @@ import {
   createMemoryHistory,
   createRouter,
   createWebHashHistory,
-  createWebHistory
+  createWebHistory, Router as VueRouter
 } from 'vue-router';
 
 import routes from './routes';
@@ -18,6 +18,8 @@ import { useAuthStore } from '@modules/auth/domain/store';
  * with the Router instance.
  */
 
+
+export let $globalRoute: VueRouter;
 export default route(function(/* { store, ssrContext } */)
 {
 
@@ -49,6 +51,13 @@ export default route(function(/* { store, ssrContext } */)
       return;
     }
 
+    // IF TOKEN EXISTS AND THE ROUTE DOESNT REQUIRE AUTH, THEN REDIRECT TO MAIN PAGE
+    if (token && to.matched.some(record => record.meta.noAuth))
+    {
+      await Router.push('/polla');
+      return;
+    }
+
     if (to.path === '/')
     {
       if (!to.query.jwt_token || !to.query.integration)
@@ -58,6 +67,8 @@ export default route(function(/* { store, ssrContext } */)
       }
     }
   });
+
+  $globalRoute = Router;
 
   return Router;
 });

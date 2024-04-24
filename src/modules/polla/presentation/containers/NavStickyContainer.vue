@@ -39,6 +39,9 @@ import { usePollaStore } from '@modules/polla/domain/store';
 import { OptionsTap } from '@modules/polla/domain/store/types';
 import { useRouter } from 'vue-router';
 import { Hippodrome } from '@modules/polla/domain/models';
+import { AxiosError } from 'axios';
+import { onErrorPushToPage } from '@common/utils';
+import configuration from '@config/configuration';
 
 const $router = useRouter();
 
@@ -133,9 +136,12 @@ watch(() => pollaStore.Pot, (newValue) =>
 
 onBeforeMount(async() =>
 {
-  await Promise.all([
-    GetHippodromesUseCase.handle()
-  ]);
+  await GetHippodromesUseCase.handle();
+
+  if (!pollaStore.Hippodromes.length)
+  {
+    await $router.push('/no-hippodromes');
+  }
 
   const hippodromeId = $router.currentRoute.value.query?.hippodrome as string;
   const optionTab = $router.currentRoute.value.query?.tab as OptionsTap;

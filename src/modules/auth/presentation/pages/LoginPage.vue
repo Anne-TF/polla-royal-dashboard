@@ -27,6 +27,7 @@ const $router = useRouter();
 
 onMounted(async() =>
 {
+
   await LoginUseCase.handle($router.currentRoute.value.query);
 
   setTimeout(() =>

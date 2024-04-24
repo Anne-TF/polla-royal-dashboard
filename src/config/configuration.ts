@@ -14,5 +14,11 @@ export default (): IConfig => ({
     withCredentials: process.env.API_WITH_CREDENTIALS
   },
   useLocalStorage: process.env.USE_LOCAL_STORAGE,
-  s3Url: process.env.S3_URL
+  s3Url: process.env.S3_URL,
+  onErrorPath: {
+    JWT_INVALID: '/invalid-token',
+    JWT_EXPIRED: '/session-expired',
+    INTEGRATION_NOT_FOUND: '/operator-error',
+    USER_DOES_NOT_EXIST_IN_OPERATOR: '/operator-error'
+  }
 });

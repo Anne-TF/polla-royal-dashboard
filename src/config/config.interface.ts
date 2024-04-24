@@ -20,4 +20,5 @@ export interface IConfig {
   server: IServerConfig;
   useLocalStorage: boolean;
   s3Url: string;
+  onErrorPath: Record<string, string>;
 }

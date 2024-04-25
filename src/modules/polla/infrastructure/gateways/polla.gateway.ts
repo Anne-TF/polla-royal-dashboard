@@ -9,7 +9,7 @@ import {
   IGetRacesResponse
 } from '@modules/polla/infrastructure/interfaces';
 import { setBasePath, setUriParams } from '@common/utils';
-import { useAuthStore } from '@modules/auth/domain/store';
+import { IPollaSchema } from '@modules/polla/presentation/schemas';
 
 export class PollaGateway
 {
@@ -43,7 +43,6 @@ export class PollaGateway
     return HTTP.request<IGetPotResponse>({ config, token });
   }
 
-
   static async getTicketHistory(hippodromeId: string, token: string)
   {
     const config: AxiosRequestConfig = {
@@ -53,4 +52,13 @@ export class PollaGateway
     return HTTP.request<IGetTicketHistoryResponse>({ config, token });
   }
 
+  static async bet(data: IPollaSchema, token: string)
+  {
+    const config: AxiosRequestConfig = {
+      ... setBasePath(this.routes.bet, this.basePath),
+      data
+    };
+
+    return HTTP.request<IGetTicketHistoryResponse>({ config, token });
+  }
 }

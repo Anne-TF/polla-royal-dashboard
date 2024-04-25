@@ -19,6 +19,6 @@ export class GetPotUseCase
     const pollaStore = usePollaStore();
 
     pollaStore.setPot(response.pot);
-    pollaStore.setTicket(response.price);
+    // pollaStore.setTicket(response.price);
   }
 }

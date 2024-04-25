@@ -15,6 +15,10 @@ export const pollaRoutes =  {
   hippodromeHistory: {
     url: 'apiPolla/hippodromes/:id/tickets-history',
     method: 'GET'
+  },
+  bet: {
+    url: 'apiPolla/bet',
+    method: 'POST'
   }
 };
 

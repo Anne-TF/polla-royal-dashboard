@@ -12,7 +12,7 @@
           <span :class="{'text-strike': !pollaStore.Betting}">Ticket</span>
           <q-space />
           {{ formatedAmount(aproximateAmountBet) }} {{pollaStore.Ticket?.currency}}
-          <q-icon size="1.5em" name="expand_less" @click="toggleShowing" />
+          <q-icon size="1.5em" name="expand_less" @click="!pollaStore.Betting || toggleShowing()" />
         </q-toolbar-title>
       </q-toolbar>
 

@@ -11,7 +11,7 @@
                          :class="{'disabled': !pollaStore.Betting}">
           <span :class="{'text-strike': !pollaStore.Betting}">Ticket</span>
           <q-space />
-          {{ aproximateAmountBet }} {{pollaStore.Ticket?.currency}}
+          {{ formatedAmount(aproximateAmountBet) }} {{pollaStore.Ticket?.currency}}
           <q-icon size="1.5em" name="expand_less" @click="toggleShowing" />
         </q-toolbar-title>
       </q-toolbar>
@@ -42,12 +42,12 @@
             <div class="flex row">
               <span class="text-semi-bold text-grey-14 fs-16">Combinaciones: </span>
               <q-space />
-              <span class="text-semi-bold text-app-primary">{{ combinations }}</span>
+              <span class="text-semi-bold text-app-primary">{{ formatedAmount(combinations, 0) }}</span>
             </div>
             <div class="flex row pb-10" style="border-bottom: #7e3ac7 dashed 1.5px">
               <span class="text-semi-bold text-grey-14 fs-16">Precio por combinacion: </span>
               <q-space />
-              <span class="text-semi-bold text-app-primary">{{ pollaStore.Ticket.amount }} {{ pollaStore.Ticket.currency }}</span>
+              <span class="text-semi-bold text-app-primary">{{ formatedAmount(pollaStore.Ticket.amount) }} {{ pollaStore.Ticket.currency }}</span>
             </div>
             <div class="flex row mt-10" >
               <span class="text-semi-bold text-grey-14 fs-16">Total: </span>
@@ -55,10 +55,13 @@
               <span class="text-semi-bold" :class="{
                 'text-red': insufficientBalance,
                 'text-app-primary': !insufficientBalance
-              }" >{{ aproximateAmountBet }} {{ pollaStore.Ticket.currency }}</span>
+              }" >{{ formatedAmount(aproximateAmountBet) }} {{ pollaStore.Ticket.currency }}</span>
             </div>
             <div v-if="insufficientBalance" class="flex row mt-5 fs-12 text-italic" >
-              <span class="text-semi-bold text-red">Su saldo es insuficiente para realizar esta apuesta </span>
+              <span class="text-semi-bold text-red">- Su saldo es insuficiente para realizar esta apuesta.</span>
+            </div>
+            <div v-if="disabledBet" class="flex row mt-5 fs-12 text-italic" >
+              <span class="text-semi-bold text-red">- Su apuesta aun no esta completa, debe tener al menos un caballo seleccionado por carrera.</span>
             </div>
           </q-card-section>
 
@@ -86,7 +89,6 @@
             </q-checkbox>
           </q-card-section>
 
-<!--          <q-btn :disable="disabledBet || !termsAccepted || insufficientBalance" color="app-primary" align="center"-->
           <q-btn :disable="disabledBet || !termsAccepted" color="app-primary" align="center"
                  @click="() => {
                    showing = false;
@@ -138,7 +140,7 @@
 <script setup lang="ts">
 import { usePollaStore } from '@modules/polla/domain/store';
 import { RunnerBoxComponent } from '@modules/polla/presentation/components';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { parse, removeNonNumericCharacters } from '@common/utils';
 import { IRunner } from '@modules/polla/domain/models';
 import { useAuthStore } from '@modules/auth/domain/store';
@@ -188,6 +190,8 @@ const confirmBet = async() =>
   confirm.value = false;
 };
 
+const formatedAmount = (amount: number, digits: number = 2) => amount.toLocaleString('de-DE', { minimumFractionDigits: digits });
+
 watch(() => pollaStore.Bet, async(newValue) =>
 {
 
@@ -216,6 +220,8 @@ watch(showing, (newValue) =>
 {
   document.body.style.overflow = newValue ? 'hidden' : '';
 });
+
+// TODO: si un usuario excede las 1000 combinaciones, se debe mostrar un mensaje de error 2X4 4x3
 
 </script>
 

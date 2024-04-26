@@ -20,5 +20,6 @@ export default (): IConfig => ({
     JWT_EXPIRED: '/session-expired',
     INTEGRATION_NOT_FOUND: '/operator-error',
     USER_DOES_NOT_EXIST_IN_OPERATOR: '/operator-error'
-  }
+  },
+  combinationLimit: process.env.COMBINATION_LIMIT
 });

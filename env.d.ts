@@ -17,5 +17,7 @@ declare namespace NodeJS {
     USE_LOCAL_STORAGE: boolean;
 
     S3_URL: string;
+
+    COMBINATION_LIMIT: number;
   }
 }

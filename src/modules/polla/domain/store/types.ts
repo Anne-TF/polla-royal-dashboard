@@ -15,6 +15,7 @@ export type State = {
     }
   }
   pot: number;
+  exceededCombinations: boolean;
 }
 
 export type Getters = {
@@ -24,7 +25,8 @@ export type Getters = {
   Betting: boolean;
   OptionSelected: OptionsTap;
   Pot: number;
-  Ticket: Hippodrome['ticket']
+  Ticket: Hippodrome['ticket'],
+  ExceededCombinations: boolean;
 };
 
 export type Actions = {
@@ -34,6 +36,7 @@ export type Actions = {
   setOptionSelected: (value: OptionsTap) => void;
   setPot: (value: number) => void;
   setTicket: (hippodromeId: string, value: Hippodrome['ticket']) => void;
+  setExceededCombinations: (value: boolean) => void;
 };
 
 export type PiniaStore = Store<'polla', State, Getters, Actions>;

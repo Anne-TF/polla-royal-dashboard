@@ -21,4 +21,5 @@ export interface IConfig {
   useLocalStorage: boolean;
   s3Url: string;
   onErrorPath: Record<string, string>;
+  combinationLimit: number;
 }

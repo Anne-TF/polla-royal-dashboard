@@ -24,6 +24,7 @@
             :runner
             :modelValue="selectedRunners"
             :size="40"
+            :disabled="pollaStore.ExceededCombinations && !selectedRunners.includes(runner.id)"
           />
         </div>
       </q-item-section>

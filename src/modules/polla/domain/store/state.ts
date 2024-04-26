@@ -10,7 +10,8 @@ const state = (): State =>
       hippodromeId: null,
       races: {}
     },
-    pot: 0
+    pot: 0,
+    exceededCombinations: false
   };
 };
 

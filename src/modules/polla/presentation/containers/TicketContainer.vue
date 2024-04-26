@@ -42,7 +42,15 @@
             <div class="flex row">
               <span class="text-semi-bold text-grey-14 fs-16">Combinaciones: </span>
               <q-space />
-              <span class="text-semi-bold text-app-primary">{{ formatedAmount(combinations, 0) }}</span>
+              <span class="text-semi-bold" :class="{
+                'text-red': pollaStore.ExceededCombinations,
+                'text-app-primary': !pollaStore.ExceededCombinations
+              }" >{{ formatedAmount(combinations, 0) }}</span>
+            </div>
+            <div class="flex row">
+              <span class="text-semi-bold text-grey-14 fs-16">Limite de combinaciones: </span>
+              <q-space />
+              <span class="text-semi-bold text-app-primary">{{ formatedAmount(combinationsLimit, 0) }}</span>
             </div>
             <div class="flex row pb-10" style="border-bottom: #7e3ac7 dashed 1.5px">
               <span class="text-semi-bold text-grey-14 fs-16">Precio por combinacion: </span>
@@ -62,6 +70,9 @@
             </div>
             <div v-if="disabledBet" class="flex row mt-5 fs-12 text-italic" >
               <span class="text-semi-bold text-red">- Su apuesta aun no esta completa, debe tener al menos un caballo seleccionado por carrera.</span>
+            </div>
+            <div v-if="pollaStore.ExceededCombinations" class="flex row mt-5 fs-12 text-italic" >
+              <span class="text-semi-bold text-red">- Has excedido el numero de combinaciones permitidas para la jugada.</span>
             </div>
           </q-card-section>
 
@@ -89,7 +100,7 @@
             </q-checkbox>
           </q-card-section>
 
-          <q-btn :disable="disabledBet || !termsAccepted" color="app-primary" align="center"
+          <q-btn :disable="disabledBet || !termsAccepted || insufficientBalance || pollaStore.ExceededCombinations" color="app-primary" align="center"
                  @click="() => {
                    showing = false;
                    confirm = true;
@@ -145,6 +156,7 @@ import { parse, removeNonNumericCharacters } from '@common/utils';
 import { IRunner } from '@modules/polla/domain/models';
 import { useAuthStore } from '@modules/auth/domain/store';
 import { PollaUseCase } from '@modules/polla/domain/useCases';
+import configuration from '../../../../config/configuration';
 
 const pollaStore = usePollaStore();
 const authStore = useAuthStore();
@@ -157,6 +169,7 @@ const termsAccepted = ref<boolean>(false);
 const confirm = ref<boolean>(false);
 const insufficientBalance = ref<boolean>(false);
 const loading = ref<boolean>(false);
+const combinationsLimit = configuration().combinationLimit;
 
 const toggleShowing = () =>
 {
@@ -215,6 +228,11 @@ watch(() => pollaStore.Bet, async(newValue) =>
 
   disabledBet.value = !racesKey.every(key => newValue.races[key].length);
 }, { deep: true });
+
+watch(() => combinations.value, (newValue) =>
+{
+  pollaStore.setExceededCombinations(newValue > combinationsLimit);
+});
 
 watch(showing, (newValue) =>
 {

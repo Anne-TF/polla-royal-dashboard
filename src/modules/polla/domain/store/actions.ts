@@ -50,6 +50,10 @@ const actions: PiniaActions = {
     {
       this.selectedHippodrome.ticket = value;
     }
+  },
+  setExceededCombinations(value)
+  {
+    this.exceededCombinations = value;
   }
 };
 

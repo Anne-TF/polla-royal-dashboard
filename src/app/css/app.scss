@@ -12,6 +12,7 @@ $colors: (
   'info': $app-info,
   'warning': $app-warning,
   'success': $app-success,
+  'input': $app-input,
 );
 
 $tones: (
@@ -85,20 +86,90 @@ body {
   }
 }
 
-
-.q-field--standout.q-field--dark.q-field--highlighted .q-field__control {
-  background: rgba(255, 255, 255, 0.07) !important;
+a {
+  text-decoration: none !important;
 }
 
-.q-field--standout.q-field--dark.q-field--highlighted .q-field__native {
-  color: white !important;
+.custom-size-input {
+  .q-field__control {
+    height: 3rem !important;
+    border-radius: 8px;
+  }
+  .q-field__marginal {
+    height: 3rem !important;
+  }
+
+  .q-field__control,
+  .q-field--outlined.q-field--rounded .q-field__control,
+  .q-field--outlined {
+    min-height: 3rem !important;
+  }
+
+  .q-field__native {
+    min-height: 3rem !important;
+    height: 3rem !important;
+    max-height: 3rem !important;
+  }
+
+  .q-field--error .q-field__bottom {
+    color: $app-danger !important;
+  }
+
+  .text-negative {
+    color: $app-danger !important;
+  }
 }
 
-.q-field--standout.q-field--dark.q-field--highlighted .q-field__prepend {
-  color: white !important;
+.app-switch {
+  height: 28px !important;
+  margin-top: -2px !important;
+  margin-right: 10px !important;
+
+  .q-toggle__inner {
+    width: 35px !important;
+    margin-left: 12px !important;
+    min-width: 35px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    .q-toggle__track {
+      height: 25px !important;
+      width: 43px !important;
+      margin-top: 0 !important;
+      opacity: 1 !important;
+      padding: 0 10px;
+      border-radius: 18px !important;
+    }
+    .q-toggle__thumb {
+      margin-top: -8px !important;
+      height: 20px;
+      width: 20px;
+    }
+    .q-toggle__thumb::after {
+      box-shadow: none !important;
+    }
+    .q-toggle__label {
+      width: 50px !important;
+    }
+  }
 }
 
-.q-field--standout.q-field--highlighted .q-field__control {
-  box-shadow: 0 0 0 0 !important;
-  background: #000 !important;
+.app-switch--active {
+  .q-toggle__track {
+    color: $app-secondary !important;
+    border: solid 0.8px $app-secondary !important;
+  }
+  .q-toggle__thumb {
+    color: white !important;
+    margin-left: -7px !important;
+  }
+}
+
+.app-switch--inactive {
+  .q-toggle__track {
+    color: $app-input !important;
+    border: solid 0.8px $app-input !important;
+  }
+  .q-toggle__thumb {
+    margin-left: -6px !important;
+  }
 }

@@ -1,24 +1,23 @@
 import { Store } from 'pinia';
 import { PiniaActionAdaptor, PiniaGetterAdaptor } from '@stores/types';
+import { IUser } from '@modules/dashboard/infrastructure/interfaces';
 
 export type State = {
   prToken: string | null;
-  balances: Record<string, number>;
-  currencies: string[];
-  defaultCurrency: string | null;
+  user: IUser | null;
+  isSuperAdmin: boolean;
 }
 
 export type Getters = {
   GetToken: string | null;
-  GetCurrencies: string[];
-  GetBalance: (currency: string) => number | undefined;
-  GetDefaultCurrency: string | null;
+  GetIsSuperAdmin: boolean;
+  GetUser: IUser | null;
 };
 
 export type Actions = {
   setToken: (value: string | null) => void;
-  setBalances: (balances: Record<string, number>) => void;
-  setDefaultCurrency: (currency: string) => void;
+  setIsSuperAdmin: (value: boolean) => void;
+  setUser: (value: IUser | null) => void;
   logout: () => void;
 };
 

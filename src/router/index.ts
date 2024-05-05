@@ -7,7 +7,7 @@ import {
 } from 'vue-router';
 
 import routes from './routes';
-import { useAuthStore } from '@modules/auth/domain/store';
+// import { useAuthStore } from '@modules/auth/domain/store';
 
 /*
  * If not building with SSR mode, you can
@@ -37,7 +37,7 @@ export default route(function(/* { store, ssrContext } */)
     history: createHistory(process.env.VUE_ROUTER_BASE)
   });
 
-  Router.beforeEach(async(to) =>
+  /* Router.beforeEach(async(to) =>
   {
     // FIRST WE CHECK IF TOKEN IS SETTED IN LOCAL STORAGE
     const authStore = useAuthStore();
@@ -66,7 +66,7 @@ export default route(function(/* { store, ssrContext } */)
         return;
       }
     }
-  });
+  });*/
 
   $globalRoute = Router;
 

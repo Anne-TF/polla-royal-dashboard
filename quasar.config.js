@@ -54,7 +54,8 @@ module.exports = configure(function(/* ctx */)
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
+      'material-icons-outlined'
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
@@ -228,7 +229,7 @@ module.exports = configure(function(/* ctx */)
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'ar-base-front'
+        appId: 'ar-dash-front'
       }
     },
 

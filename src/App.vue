@@ -1,8 +1,5 @@
 <template>
-  <div
-    :style="`background-image: url('/images/bgImg.svg')`"
-    style="background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; "
-  >
+  <div>
     <router-view  />
   </div>
 </template>

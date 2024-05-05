@@ -5,25 +5,18 @@ const actions: PiniaActions = {
   {
     this.prToken = value;
   },
-  setBalances(balances)
+  setIsSuperAdmin(value)
   {
-    this.balances = balances;
-    this.currencies = Object.keys(balances);
+    this.isSuperAdmin = value;
   },
-  setDefaultCurrency(currency)
+  setUser(value)
   {
-    if (!this.currencies.includes(currency))
-    {
-      this.defaultCurrency = this.currencies[0];
-    }
-    else
-    {
-      this.defaultCurrency = currency;
-    }
+    this.user = value;
   },
   logout()
   {
     this.prToken = null;
+    this.user = null;
     this.router.push('/');
   }
 };

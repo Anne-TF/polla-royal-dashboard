@@ -1,75 +1,110 @@
 <template>
-  <div class="fullscreen  bg-app-tertiary text-white text-center q-pa-md flex flex-center">
-    <div>
-      <div style="font-size: 5vh" class="flex column items-center">
-        <q-img
-          :src="configuration().s3Url?.concat($route.query.integration as string, '.png')"
-          height="4em"
-          fit="cover"
-          width="4em"
-        />
-       <div class="flex items-center">
-         Cargando
-         <q-img width="2em" src="gifs/horse.gif" />
-       </div>
-      </div>
-    </div>
-  </div>
+  <section
+    style="background-color: #0e003d"
+    class="fullscreen text-white text-center q-pa-md flex flex-center">
+    <q-card
+      :class="{
+        'wp-100': $q.screen.lt.md,
+        'wp-35 q-px-sm': ($q.screen.gt.md || $q.screen.md) && $q.screen.lt.xl,
+        'wp-25 q-px-sm': $q.screen.gt.lg
+      }"
+      style="background-color: #272630; z-index: 2; letter-spacing: 0.25px;"
+      flat
+      class="flex column items-center br-10 q-pt-md q-pb-lg">
+     <q-card-section class="q-pb-md">
+       <q-img src="/public/images/horse.svg" height="5em" width="8em" />
+       <h2 class="text-semi-bold lh-40" style="font-size: clamp(1.2em, 2em, 2.3em)">Bienvenido al panel administrativo</h2>
+     </q-card-section>
+
+      <q-card-section class="q-pt-none wp-100 flex">
+        <p v-text="'Ingresa tus datos para continuar'" class="text-semi-bold text-grey-5" />
+        <q-form @submit.prevent="onSubmit" greedy class="q-gutter-y-lg full-width custom-size-input">
+          <q-input
+            class="full-width"
+            :rules="[
+              (v: string) => !!v || 'Este campo es requerido',
+              (v: string) => (v && v.length >= 8) || 'Mínimo 8 caracteres',
+              (v: string) => (v && v.length <= 50) || 'Máximo 50 caracteres',
+              (v: string | RegExp) => /^[\w-\.]+@([\w-]{3,64}\.)+[\w-]{2,4}$/.test(v.toString()) || 'Debe ingresar un correo electrónico válido'
+            ]"
+            placeholder="Correo electrónico"
+            input-class="text-white"
+            color="transparent"
+            no-error-icon
+            outlined
+            bg-color="app-input"
+            v-model="form.email" />
+
+          <q-input
+            class="full-width"
+            :type="isPwd ? 'password' : 'text'"
+            :rules="[
+              (v: string) => !!v || 'Este campo es requerido'
+            ]"
+            placeholder="Contraseña"
+            input-class="text-white"
+            outlined
+            no-error-icon
+            color="transparent"
+            ref="pInput"
+            bg-color="app-input"
+            v-model="form.password">
+            <template #append>
+              <q-icon class="cursor-pointer"
+                      :name="isPwd ? 'o_visibility' : 'o_visibility_off'"
+                      :color="$refs.pInput?.hasError ? 'app-danger' : 'grey-4'" @click="isPwd = !isPwd" />
+            </template>
+          </q-input>
+          <a href="/" class="block fs-14 text-right q-mt-sm cursor-pointer wp-100 text-app-secondary">
+            ¿Olvidaste tu contraseña?
+          </a>
+
+          <q-btn
+            label="Ingresar"
+            no-caps
+            type="submit"
+            :loading="loading"
+            :disable="loading"
+            color="app-secondary"
+            class="full-width mt-90 py-10 br-6 text-app-primary text-semi-bold"
+            unelevated
+          />
+        </q-form>
+      </q-card-section>
+    </q-card>
+
+    <q-img class="absolute-bottom" src="public/images/bgImg.svg" />
+  </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { LoginUseCase } from '@modules/auth/domain/useCases';
+import { reactive, ref } from 'vue';
+// import { LoginUseCase } from '@modules/auth/domain/useCases';
 import { useRouter } from 'vue-router';
-import configuration from '@config/configuration';
+import { QForm } from 'quasar';
 
 const $router = useRouter();
 
-onMounted(async() =>
-{
+const loading = ref<boolean>(false);
+const isPwd = ref<boolean>(true);
+const form = reactive<{
+  email: string;
+  password: string;
 
-  await LoginUseCase.handle($router.currentRoute.value.query);
+}>({
+  email: '',
+  password: ''
+});
+
+const onSubmit = async(): Promise<void> =>
+{
+  loading.value = true;
+  // await LoginUseCase.handle($router.currentRoute.value.query);
 
   setTimeout(() =>
   {
-    $router.push('/polla');
-  }, 1500);
-});
+    loading.value = false;
+    $router.push('/dashboard');
+  }, 2000);
+};
 </script>
-
-<style scoped lang="scss">
-.loader, .loader:before, .loader:after {
-  border-radius: 50%;
-  width: 2.5em;
-  height: 2.5em;
-  animation-fill-mode: both;
-  animation: bblFadInOut 1.8s infinite ease-in-out;
-}
-.loader {
-  color: #FFF;
-  font-size: 7px;
-  position: relative;
-  text-indent: -9999em;
-  transform: translateZ(0);
-  animation-delay: -0.16s;
-}
-.loader:before,
-.loader:after {
-  content: '';
-  position: absolute;
-  top: 0;
-}
-.loader:before {
-  left: -3.5em;
-  animation-delay: -0.32s;
-}
-.loader:after {
-  left: 3.5em;
-}
-
-@keyframes bblFadInOut {
-  0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
-  40% { box-shadow: 0 2.5em 0 0 }
-}
-
-</style>

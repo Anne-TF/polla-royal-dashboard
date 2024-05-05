@@ -4,9 +4,8 @@ const state = (): State =>
 {
   return {
     prToken: null,
-    balances: null,
-    currencies: [],
-    defaultCurrency: null
+    isSuperAdmin: true,
+    user: null
   };
 };
 

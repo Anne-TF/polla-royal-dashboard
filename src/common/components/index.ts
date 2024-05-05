@@ -1,11 +1,7 @@
-import OptionSwitchComponent from './OptionSwitchComponent.vue';
-import AppSelectComponent from './AppSelectComponent.vue';
-import BalanceComponent from './BalanceComponent.vue';
-import NavComponent from './NavComponent.vue';
+import ConfirmDialogComponent from './ConfirmDialogComponent.vue';
+import FilterDialogComponent from './FilterDialogComponent.vue';
 
 export {
-  OptionSwitchComponent,
-  AppSelectComponent,
-  BalanceComponent,
-  NavComponent
+  ConfirmDialogComponent,
+  FilterDialogComponent
 };

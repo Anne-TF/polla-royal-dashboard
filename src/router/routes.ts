@@ -3,15 +3,18 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('@modules/auth/presentation/pages/LoginPage.vue')
+    component: () => import('@modules/auth/presentation/pages/LoginPage.vue'),
+    meta: {
+      requiresAuth: false
+    }
   },
   {
-    path: '/polla',
+    path: '/dashboard',
     component: () => import('@common/layouts/MainLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('@modules/polla/presentation/pages/MainPage.vue')
+        component: () => import('@modules/dashboard/presentation/pages/IndexPage.vue')
       }
     ],
     meta: {
@@ -19,28 +22,16 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    path: '/no-hippodromes',
-    component: () => import('@modules/polla/presentation/pages/NoHippodromes.vue')
-  },
-  {
-    path: '/session-expired',
-    component: () => import('@modules/auth/presentation/pages/SessionExpired.vue'),
+    path: '/usuarios',
+    component: () => import('@common/layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('@modules/users/presentation/pages/IndexPage.vue')
+      }
+    ],
     meta: {
-      noAuth: true
-    }
-  },
-  {
-    path: '/operator-error',
-    component: () => import('@modules/auth/presentation/pages/OperatorError.vue'),
-    meta: {
-      noAuth: true
-    }
-  },
-  {
-    path: '/invalid-token',
-    component: () => import('@modules/auth/presentation/pages/InvalidToken.vue'),
-    meta: {
-      noAuth: true
+      requiresAuth: true
     }
   },
   {

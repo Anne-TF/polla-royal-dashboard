@@ -14,6 +14,9 @@
   .ml-#{$size} {
       margin-left: #{$size}px !important;
   }
+  .-mt-#{$size} {
+    margin-top: -#{$size}px !important;
+  }
   .mt-#{$size} {
       margin-top: #{$size}px !important;
   }

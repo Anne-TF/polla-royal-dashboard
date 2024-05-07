@@ -41,7 +41,7 @@
               :clickable="subopt.active"
               v-ripple
               @click="$router.push(subopt.link)"
-              :active="$router.currentRoute.value.path === subopt.link"
+              :active="!$router.currentRoute.value.path.includes(subopt.link)"
               active-class="bg-lx-primary text-white text-opensans-bold"
               class="wp-100 text-opensans-medium"
             >
@@ -80,11 +80,12 @@
 import { ref } from 'vue';
 import { useAuthStore } from '@modules/auth/domain/store';
 
-interface NavigationOptions {
+interface NavigationOption {
   title: string;
   icon: string;
   expanded: boolean;
   mustBeSuperAdmin?: boolean;
+  to?: string;
   suboptions: {
     title: string;
     icon: string;
@@ -97,7 +98,7 @@ interface NavigationOptions {
 const authStore = useAuthStore();
 
 const drawer = ref<boolean>(false);
-const navigationOptions: NavigationOptions = [
+const navigationOptions: NavigationOption[] = [
   {
     title: 'Gestionar operadores',
     icon: 'domain_add',
@@ -108,13 +109,13 @@ const navigationOptions: NavigationOptions = [
         title: 'Lista de operadores',
         icon: 'format_list_bulleted',
         active: true,
-        link: '/dashboard/operadores'
+        link: '/operadores'
       },
       {
         title: 'Crear operador',
         icon: 'add',
         active: true,
-        link: '/dashboard/operadores/crear'
+        link: '/operadores/crear'
       }
     ]
   },
@@ -127,7 +128,7 @@ const navigationOptions: NavigationOptions = [
         title: 'Lista de apuestas',
         icon: 'format_list_bulleted',
         active: true,
-        link: '/dashboard/apuestas'
+        link: '/apuestas'
       }
     ]
   },

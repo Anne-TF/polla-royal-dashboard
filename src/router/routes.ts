@@ -35,6 +35,19 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/operadores',
+    component: () => import('@common/layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('@modules/operators/presentation/pages/IndexPage.vue')
+      }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/404',
     component: () => import('@common/pages/ErrorNotFound.vue')
   },

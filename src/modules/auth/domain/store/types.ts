@@ -1,6 +1,6 @@
 import { Store } from 'pinia';
 import { PiniaActionAdaptor, PiniaGetterAdaptor } from '@stores/types';
-import { IUser } from '@modules/dashboard/infrastructure/interfaces';
+import { IUser } from '@modules/users/infrastructure/interfaces';
 
 export type State = {
   prToken: string | null;

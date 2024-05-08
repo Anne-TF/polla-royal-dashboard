@@ -48,6 +48,19 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/apuestas',
+    component: () => import('@common/layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('@modules/transactions/presentation/pages/IndexPage.vue')
+      }
+    ],
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/404',
     component: () => import('@common/pages/ErrorNotFound.vue')
   },

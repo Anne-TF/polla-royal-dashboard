@@ -86,7 +86,7 @@ interface NavigationOption {
   expanded: boolean;
   mustBeSuperAdmin?: boolean;
   to?: string;
-  suboptions: {
+  suboptions?: {
     title: string;
     icon: string;
     active: boolean;
@@ -120,17 +120,10 @@ const navigationOptions: NavigationOption[] = [
     ]
   },
   {
-    title: 'Gestionar apuestas',
+    title: 'Visualizar apuestas',
     icon: 'casino',
     expanded: false,
-    suboptions: [
-      {
-        title: 'Lista de apuestas',
-        icon: 'format_list_bulleted',
-        active: true,
-        link: '/apuestas'
-      }
-    ]
+    to: '/apuestas'
   },
   {
     title: 'Gestionar usuarios',

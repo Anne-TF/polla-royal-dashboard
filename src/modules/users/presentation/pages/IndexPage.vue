@@ -161,7 +161,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import { FilterOption, ITablePagination } from '@common/interfaces';
-import { IUser } from '@modules/dashboard/infrastructure/interfaces';
+import { IUser } from '@modules/users/infrastructure/interfaces';
 import { ConfirmDialogComponent, FilterDialogComponent } from '@common/components';
 import { Router, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';

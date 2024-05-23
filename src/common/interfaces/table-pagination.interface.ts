@@ -1,5 +1,5 @@
 export interface ITablePagination {
-  sortBy: 'desc' | 'asc';
+  sortBy: string;
   descending: boolean;
   page: number;
   rowsPerPage: number;

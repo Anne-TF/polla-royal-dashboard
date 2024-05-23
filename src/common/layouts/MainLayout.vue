@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR lFf">
+  <q-layout view="lHh Lpr lFf">
     <q-drawer
       show-if-above
       v-model="drawer"
@@ -59,6 +59,7 @@
 
         <q-item
           clickable
+          @click="logout"
           class="absolute-bottom q-mb-sm q-px-lg">
           <q-item-section class="text-opensans-bold">
             Cerrar sesión
@@ -79,6 +80,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@modules/auth/domain/store';
+import { useRouter } from 'vue-router';
 
 interface NavigationOption {
   title: string;
@@ -94,7 +96,7 @@ interface NavigationOption {
     mustBeSuperAdmin?: boolean;
   }[];
 }
-
+const $router = useRouter();
 const authStore = useAuthStore();
 
 const drawer = ref<boolean>(false);
@@ -139,4 +141,11 @@ const navigationOptions: NavigationOption[] = [
     ]
   }
 ];
+
+const logout = (): void =>
+{
+  // TODO: IMPLEMENT LOGOUT WiTH BACK
+  authStore.logout();
+  $router.push('/');
+};
 </script>

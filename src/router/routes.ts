@@ -28,6 +28,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('@modules/users/presentation/pages/IndexPage.vue')
+      },
+      {
+        path: 'crear',
+        component: () => import('@modules/users/presentation/pages/CreatePage.vue')
+      },
+      {
+        path: 'editar/:id',
+        component: () => import('@modules/users/presentation/pages/UpdatePage.vue')
       }
     ],
     meta: {

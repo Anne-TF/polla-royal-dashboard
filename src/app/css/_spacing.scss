@@ -38,6 +38,9 @@
   .pt-#{$size} {
       padding-top: #{$size}px !important;
   }
+  .pt-percentage-#{$size} {
+    padding-top: #{$size + '%'} !important;
+  }
   .pl-#{$size} {
       padding-left: #{$size}px !important;
   }
@@ -50,6 +53,9 @@
   }
   .pb-#{$size} {
       padding-bottom: #{$size}px !important;
+  }
+  .pb-percentage-#{$size} {
+      padding-bottom: #{$size + '%'} !important;
   }
   .mb-#{$size} {
       margin-bottom: #{$size}px !important;

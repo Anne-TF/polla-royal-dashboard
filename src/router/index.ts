@@ -7,6 +7,7 @@ import {
 } from 'vue-router';
 
 import routes from './routes';
+import { useAuthStore } from '@modules/auth/domain/store';
 // import { useAuthStore } from '@modules/auth/domain/store';
 
 /*
@@ -37,7 +38,9 @@ export default route(function(/* { store, ssrContext } */)
     history: createHistory(process.env.VUE_ROUTER_BASE)
   });
 
-  /* Router.beforeEach(async(to) =>
+  $globalRoute = Router;
+
+  Router.beforeEach(async(to) =>
   {
     // FIRST WE CHECK IF TOKEN IS SETTED IN LOCAL STORAGE
     const authStore = useAuthStore();
@@ -54,21 +57,11 @@ export default route(function(/* { store, ssrContext } */)
     // IF TOKEN EXISTS AND THE ROUTE DOESNT REQUIRE AUTH, THEN REDIRECT TO MAIN PAGE
     if (token && to.matched.some(record => record.meta.noAuth))
     {
-      await Router.push('/polla');
+      await Router.push('/dashboard');
       return;
     }
+  });
 
-    if (to.path === '/')
-    {
-      if (!to.query.jwt_token || !to.query.integration)
-      {
-        await Router.push('/404');
-        return;
-      }
-    }
-  });*/
-
-  $globalRoute = Router;
 
   return Router;
 });

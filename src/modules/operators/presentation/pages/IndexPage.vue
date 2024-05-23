@@ -29,7 +29,7 @@
               anchor="bottom middle"
               :offset="[30, 5]"
               class="bg-app-tertiary"
-            >Filtrar operadors</q-tooltip>
+            >Filtrar operadores</q-tooltip>
 
             <q-badge
               v-if="showBadge"

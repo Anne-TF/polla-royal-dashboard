@@ -2,7 +2,7 @@
   <q-card :style="$q.screen.lt.md ? 'border-radius: 16px 16px 0 0 !important;' : ''"
     :class="{
       'wp-100 hp-100 q-py-lg': $q.screen.lt.md,
-      'hp-30 br-32': !$q.screen.lt.md,
+      'hp-45 br-32': !$q.screen.lt.md,
       'wp-30' : $q.screen.gt.md,
       'wp-50' : $q.screen.md,
     }"

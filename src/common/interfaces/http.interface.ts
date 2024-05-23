@@ -1,15 +1,17 @@
 import { AxiosRequestConfig } from 'axios';
 
 export interface IPaginationParams {
-  limit: string | null;
-  offset: string | null;
+  limit: string | number | null;
+  offset?: string | number | null;
 }
 
 export interface IQueryParams {
-  filter?: URLSearchParams;
+  filter?: object
   pagination?: IPaginationParams;
-  limit?: string | null;
-  offset?: string | null;
+  limit?: string | number | null;
+  offset?: string | number | null;
+  sort?: string;
+  sortOrder?: boolean;
 }
 
 export interface IHttpServiceParams<u = any> {

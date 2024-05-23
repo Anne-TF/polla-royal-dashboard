@@ -5,7 +5,8 @@
     <q-card
       :class="{
         'wp-100': $q.screen.lt.md,
-        'wp-35 q-px-sm': ($q.screen.gt.md || $q.screen.md) && $q.screen.lt.xl,
+        'wp-45' : $q.screen.md,
+        'wp-30 q-px-sm': $q.screen.gt.md && $q.screen.lt.xl,
         'wp-25 q-px-sm': $q.screen.gt.lg
       }"
       style="background-color: #272630; z-index: 2; letter-spacing: 0.25px;"
@@ -79,11 +80,14 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-// import { LoginUseCase } from '@modules/auth/domain/useCases';
-import { useRouter } from 'vue-router';
+import { LoginUseCase } from '@modules/auth/domain/useCases';
 import { QForm } from 'quasar';
+import { AxiosError } from 'axios';
+import { NotifyFn } from '@common/utils/notify.util';
+import { NotificationEnum } from '@common/constants';
+import { useI18n } from 'vue-i18n';
 
-const $router = useRouter();
+const { t } = useI18n({ useScope: 'global' });
 
 const loading = ref<boolean>(false);
 const isPwd = ref<boolean>(true);
@@ -99,12 +103,23 @@ const form = reactive<{
 const onSubmit = async(): Promise<void> =>
 {
   loading.value = true;
-  // await LoginUseCase.handle($router.currentRoute.value.query);
 
-  setTimeout(() =>
+  try
   {
+    await LoginUseCase.handle(form);
+  }
+  catch (e: AxiosError | any)
+  {
+    console.log(e);
     loading.value = false;
-    $router.push('/dashboard');
-  }, 2000);
+    const key = e.response.data.message.split(' ');
+    key.map((item: string, index: number) => index > 0 ? key[index] = item.charAt(0).toUpperCase() + item.slice(1) : key[index] = item);
+    NotifyFn(
+      NotificationEnum.ERROR,
+      t(`BackMessages.auth.${key.join('')}.title`),
+      5000,
+      t(`BackMessages.auth.${key.join('')}.caption`)
+    );
+  }
 };
 </script>

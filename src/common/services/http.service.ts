@@ -2,6 +2,8 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import axiosRetry, { IAxiosRetryConfig } from 'axios-retry';
 import configuration from '@config/configuration';
 import { IQueryParams } from '@common/interfaces';
+import { useAuthStore } from '@modules/auth/domain/store';
+import { $globalRoute } from 'app/src/router';
 
 
 interface IHTTPBasicParams {
@@ -89,29 +91,34 @@ export class HTTP
     {
       if (queryParams?.pagination?.limit)
       {
-        params.set('pagination[limit]', queryParams?.pagination?.limit);
+        params.set('pagination[limit]', queryParams?.pagination?.limit?.toString());
       }
       if (
         queryParams?.pagination?.offset !== undefined &&
         queryParams?.pagination?.offset !== null
       )
       {
-        params.set('pagination[offset]', queryParams?.pagination?.offset);
+        params.set('pagination[offset]', queryParams?.pagination?.offset?.toString());
       }
     }
 
     if (queryParams?.limit)
     {
-      params.set('limit', queryParams?.limit);
+      params.set('limit', queryParams?.limit?.toString());
     }
     if (queryParams?.offset !== undefined && queryParams?.offset !== null)
     {
-      params.set('offset', queryParams?.offset);
+      params.set('offset', queryParams?.offset?.toString());
+    }
+
+    if (queryParams?.sort && queryParams?.sortOrder)
+    {
+      params.set(`sort[${queryParams?.sort}]`, queryParams?.sortOrder ? 'asc' : 'desc');
     }
 
     Object.keys(queryParams).forEach((key) =>
     {
-      if (['filter', 'pagination', 'limit', 'offset'].includes(key))
+      if (['filter', 'pagination', 'limit', 'offset', 'sort', 'sortOrder'].includes(key))
       {
         return;
       }
@@ -171,6 +178,14 @@ export class HTTP
     }
     catch (error: AxiosError | any)
     {
+
+      if (error.response.data.errorCode === 'JWT_EXPIRED')
+      {
+        // TODO: Add refresh token mechanism
+        const authStore = useAuthStore();
+        authStore.logout();
+        await $globalRoute.push('/');
+      }
 
       if (!retries)
       {

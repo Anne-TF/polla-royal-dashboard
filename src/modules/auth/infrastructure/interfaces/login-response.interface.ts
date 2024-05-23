@@ -1,7 +1,7 @@
 import { IAPIResponse } from '@common/interfaces';
+import { IUser } from '@modules/users/infrastructure/interfaces';
 
 export interface ILoginResponse  extends IAPIResponse<{
   jwt: string;
-  balances: Record<string, number>;
-  defaultCurrency: string;
+  user: IUser;
 }> {}

@@ -6,6 +6,7 @@ import { DefaultCatch } from '@common/decorators/default-catch.decorator';
 import { ZodError } from 'zod';
 import { AuthGateway } from '@modules/auth/infrastructure/gateways/auth.gateway';
 import { useAuthStore } from '@modules/auth/domain/store';
+import { $globalRoute } from 'app/src/router';
 
 export class LoginUseCase
 {
@@ -33,8 +34,10 @@ export class LoginUseCase
     const authStore = useAuthStore();
 
     authStore.setToken(result.data.data.jwt);
-    authStore.setBalances(result.data.data.balances);
-    authStore.setDefaultCurrency(result.data.data.defaultCurrency);
+    authStore.setUser(result.data.data.user);
+    authStore.setIsSuperAdmin(result.data.data.user.rol === 'superAdmin');
+
+    await $globalRoute.push('/dashboard');
 
     return result;
   }

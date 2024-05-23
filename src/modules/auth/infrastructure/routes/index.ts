@@ -1,12 +1,8 @@
 
 const authRoutes =  {
   login: {
-    url: 'apiPolla/login',
+    url: 'admin/auth/login',
     method: 'POST'
-  },
-  balances: {
-    url: 'apiPolla/balances',
-    method: 'GET'
   }
 };
 

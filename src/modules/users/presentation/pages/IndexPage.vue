@@ -2,41 +2,52 @@
   <q-page class="q-px-lg q-pt-sm">
     <section class="q-px-lg q-pt-lg q-pb-md">
       <h1 class="text-semibold" style="font-size: clamp(1.6em, 2vw, 2em)" v-text="'Usuarios'" />
-      <div class="flex">
-        <q-input
-          color="app-secondary"
-          dense
-          borderless
-          class="br-8"
-          style="width: 300px; background: #f6ecf3 !important; padding: 0 10px"
-          debounce="300"
-          v-model="search"
-          placeholder="¿Qúe buscas?"
-        >
-          <template v-slot:prepend>
-            <q-icon color="app-primary" name="search" />
-          </template>
-        </q-input>
-        <q-btn
-          flat
-          v-if="authStore.GetIsSuperAdmin"
-          class="q-ml-sm stylesBtn px-10"
-          @click="filterDialog = true"
-        >
-          <q-icon name="filter_list_alt" size="2em" />
-          <q-tooltip
-            anchor="bottom middle"
-            :offset="[30, 5]"
-            class="bg-app-tertiary"
-          >Filtrar usuarios</q-tooltip
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <q-input
+            color="app-secondary"
+            dense
+            borderless
+            class="br-8"
+            style="width: 300px; background: #f6ecf3 !important; padding: 0 10px"
+            debounce="300"
+            v-model="search"
+            placeholder="¿Qúe buscas?"
           >
+            <template v-slot:prepend>
+              <q-icon color="app-primary" name="search" />
+            </template>
+          </q-input>
+          <q-btn
+            flat
+            v-if="authStore.GetIsSuperAdmin"
+            class="q-ml-sm stylesBtn px-10"
+            @click="filterDialog = true"
+          >
+            <q-icon name="filter_list_alt" size="2em" />
+            <q-tooltip
+              anchor="bottom middle"
+              :offset="[30, 5]"
+              class="bg-app-tertiary"
+            >Filtrar usuarios</q-tooltip
+            >
 
-          <q-badge
-            v-if="showBadge"
-            color="app-danger"
-            floating
-            style="padding: 4px 4px; min-height: 6px; top: 6px; right: 0px"
-          />
+            <q-badge
+              v-if="showBadge"
+              color="app-danger"
+              floating
+              style="padding: 4px 4px; min-height: 6px; top: 6px; right: 0px"
+            />
+          </q-btn>
+        </div>
+        <q-btn
+          unelevated
+          @click="() => $router.push('/usuarios/crear')"
+          color="app-secondary"
+          class="q-ml-sm text-app-primary text-semi-bold px-10 br-4"
+        >
+          <q-icon name="add_circle" size="1.5em" class="q-mr-sm" />
+          Crear usuario
         </q-btn>
 
         <q-dialog
@@ -66,6 +77,7 @@
       :loading="loadingPagination"
       flat
       wrap-cells
+      color="app-secondary"
       tabindex="0"
       table-header-class="bg-app-primary-700 br-8 text-semi-bold"
       :rows="rows"
@@ -91,30 +103,25 @@
             key="name"
             :props="props"
           >
-            {{ props.row.firstName.concat(' ', props.row.lastName) }}
+            {{ props.row.nombre.concat(' ', props.row.apellido) }}
           </q-td>
           <q-td key="phone" :props="props">
-            {{ parsePhoneNumberFromString(props.row.phone, '+56').formatInternational() }}
+            {{ props.row.tlf ? parsePhoneNumberFromString(props.row.tlf, '+58').formatInternational() : '-' }}
           </q-td>
-          <q-td key="birthday" :props="props">
-            {{ props.row.birthday }}
+          <q-td key="createdAt" :props="props">
+            {{ ParseDate(false, props.row.creado, 'DD/MM/YYYY') }}
           </q-td>
           <q-td key="email" :props="props">
             {{ props.row.email }}
           </q-td>
           <q-td key="provider" v-if="authStore.GetIsSuperAdmin" :props="props">
-            {{ props.row.provider }}
+            proveedor
           </q-td>
           <q-td key="actions" class="q-gutter-x-md" :props="props">
             <q-btn
-              icon="o_visibility" class="text-aut-grayscale-subtitle" dense round flat />
+              icon="o_edit" class="text-aut-grayscale-subtitle" @click="$router.push(`/usuarios/editar/${props.row.id}`)" dense round flat />
             <q-btn
               icon="o_delete" class="text-aut-grayscale-subtitle" dense round flat  @click="ActivateDialog(props.row.id, 'delete')" />
-          </q-td>
-          <q-td key="status" :props="props">
-            {{ props.row.enable ? 'Activo' : 'Inactivo' }}
-            <q-toggle class="app-switch" :class="{ 'app-switch--active' : props.row.enable, 'app-switch--inactive' : !props.row.enable }"
-                      v-model="props.row.enable" @update:model-value="ActivateDialog(props.row.id, 'status')" />
           </q-td>
         </q-tr>
       </template>
@@ -126,19 +133,11 @@
           No se encontraron registros
         </div>
       </template>
-    </q-table>
 
-    <q-dialog :maximized="$q.screen.lt.sm"
-              persistent :position="$q.screen.gt.sm ? 'standard' : 'bottom'" v-model="confirmStatus">
-      <ConfirmDialogComponent
-        :loadingDialog="loadingStatus"
-        @onYes="ChangeStatusFn"
-        icon="o_dangerous"
-        @onNo="RevertStatus"
-        :title="rows.find((e) => e.id === currentId)?.firstName?.concat(' ', rows.find((e) => e.id === currentId)?.lastName)"
-        :caption="`¿Estás seguro que deseas cambiar el estado del usuario '${rows.find((e) => e.id === currentId)?.firstName?.concat(' ', rows.find((e) => e.id === currentId)?.lastName)}'?`"
-      />
-    </q-dialog>
+      <template v-slot:loading>
+        <q-inner-loading showing color="app-primary" />
+      </template>
+    </q-table>
 
     <q-dialog :maximized="$q.screen.lt.sm" persistent :position="$q.screen.gt.sm ? 'standard' : 'bottom'" v-model="confirmDelete">
       <ConfirmDialogComponent
@@ -149,10 +148,10 @@
           currentId = null;
         }"
         yes-btn-text="Borrar usuario"
-        icon="o_delete_forever"
-        :title="rows.find((e) => e.id === currentId)?.firstName?.concat(' ', rows.find((e) => e.id === currentId)?.lastName)"
-        :caption="`Al eliminar al usuario '${rows.find((e) => e.id === currentId)?.firstName?.concat(' ', rows.find((e) => e.id === currentId)?.lastName)}',
+        :title="rows.find((e) => e.id === currentId)?.nombre?.concat(' ', rows.find((e) => e.id === currentId)?.apellido)"
+        :caption="`Al eliminar al usuario '${rows.find((e) => e.id === currentId)?.nombre?.concat(' ', rows.find((e) => e.id === currentId)?.apellido)}',
         este ya no podrá iniciar sesión en el panel administrativo.`"
+        icon="o_delete_forever"
       />
     </q-dialog>
   </q-page>
@@ -163,15 +162,16 @@ import { computed, onMounted, ref } from 'vue';
 import { FilterOption, ITablePagination } from '@common/interfaces';
 import { IUser } from '@modules/users/infrastructure/interfaces';
 import { ConfirmDialogComponent, FilterDialogComponent } from '@common/components';
-import { Router, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import { NotifyFn } from '@common/utils/notify.util';
 import { NotificationEnum } from '@common/constants';
 import { useAuthStore } from '@modules/auth/domain/store';
+import { DeleteUserUseCase, ListUseCase } from '@modules/users/domain/useCases';
+import { AxiosError } from 'axios';
+import { ParseDate } from '../../../../common/utils';
 
 // IMMUTABLES
-const $router: Router = useRouter();
 const { t } = useI18n({ useScope: 'global' });
 const authStore = useAuthStore();
 
@@ -194,11 +194,11 @@ const columns = [
     sortable: false
   },
   {
-    name: 'birthday',
+    name: 'createdAt',
     required: true,
-    label: 'Fecha de nacimiento',
+    label: 'Fecha de creación',
     align: 'left',
-    field: 'birthday',
+    field: 'createdAt',
     sortable: false
   }, {
     name: 'email',
@@ -214,14 +214,6 @@ const columns = [
     label: 'Acciones',
     field: 'actions',
     align: 'left',
-    sortable: false
-  },
-  {
-    name: 'status',
-    required: true,
-    label: 'Estado',
-    align: 'left',
-    field: 'status',
     sortable: false
   }
 ];
@@ -243,11 +235,11 @@ const columnsFAdmin = [
     sortable: false
   },
   {
-    name: 'birthday',
+    name: 'createdAt',
     required: true,
-    label: 'Fecha de nacimiento',
+    label: 'Fecha de creación',
     align: 'left',
-    field: 'birthday',
+    field: 'createdAt',
     sortable: false
   }, {
     name: 'email',
@@ -272,20 +264,12 @@ const columnsFAdmin = [
     field: 'actions',
     align: 'left',
     sortable: false
-  },
-  {
-    name: 'status',
-    required: true,
-    label: 'Estado',
-    align: 'left',
-    field: 'status',
-    sortable: false
   }
 ];
 const loadingPagination = ref<boolean>(false);
 const rows = ref<IUser[]>([]);
 const paginationTable = ref<ITablePagination>({
-  sortBy: 'desc',
+  sortBy: 'creado',
   descending: false,
   page: 1,
   rowsPerPage: 20,
@@ -295,7 +279,7 @@ const paginationTable = ref<ITablePagination>({
 const search = ref<string>('');
 
 // MISCELLANEOUS
-const currentId = ref<string | null>(null);
+const currentId = ref<number | null>(null);
 
 // FILTERS
 const showBadge = ref<boolean>(false);
@@ -316,51 +300,19 @@ const options: FilterOption[] = [
 const filtersToApply = ref<string[]>([]);
 
 // BOOLEANS
-const confirmStatus = ref<boolean>(false);
 const confirmDelete = ref<boolean>(false);
-const loadingStatus = ref<boolean>(false);
 const loadingDelete = ref<boolean>(false);
 
 // GETTERS
 const getColumns = computed(() => authStore.GetIsSuperAdmin ? columnsFAdmin : columns);
 
 // FUNCTIONS
-const ChangeStatusFn = async(): Promise<void> =>
-{
-  const item: IUser | null = rows.value.find(
-    (e) => e.id === currentId.value
-  );
-  try
-  {
-    loadingStatus.value = true;
-    // TODO: Request goes here
-    NotifyFn(
-      NotificationEnum.SUCCESS,
-      '¡Todo listo!',
-      3000,
-      'El estado del usuario fue cambiado exitosamente.'
-    );
-    confirmStatus.value = false;
-    loadingStatus.value = false;
-  }
-  catch (err:  any)
-  {
-    loadingStatus.value = false;
-    NotifyFn(
-      NotificationEnum.ERROR,
-      t(`BackMessages.${err?.response?.data.errorCode}.title`),
-      8000,
-      t(`BackMessages.${err?.response?.data.errorCode}.caption`)
-    );
-  }
-};
-
 const DeleteItem = async(): Promise<void> =>
 {
   try
   {
     loadingDelete.value = true;
-    // TODO: Request goes here
+    await DeleteUserUseCase.handle(currentId.value);
     NotifyFn(
       NotificationEnum.SUCCESS,
       '¡Todo listo!',
@@ -384,26 +336,12 @@ const DeleteItem = async(): Promise<void> =>
 };
 
 const ActivateDialog = (
-  id: string,
+  id: number,
   dType: 'status' | 'delete'
 ): void =>
 {
-  confirmStatus.value = dType === 'status';
   confirmDelete.value = dType === 'delete';
   currentId.value = id;
-};
-
-const RevertStatus = (): void =>
-{
-  confirmStatus.value = false;
-  const index: number = rows.value.findIndex((e) => e.id === currentId.value);
-  if (index > -1)
-  {
-    setTimeout(() =>
-    {
-      rows.value[index].enable = !rows.value[index].enable;
-    }, 300);
-  }
 };
 
 const GetItems = async(
@@ -417,45 +355,28 @@ const GetItems = async(
 {
   try
   {
-    rows.value = [];
     loadingPagination.value = true;
     showBadge.value = Object.keys(filter || {}).length > 0;
-    // request goes here
-    const data: IUser[] = [];
-    for (let i = 0; i < 20; i++)
-    {
-      data.push({
-        id: (i + rows.value.length).toString(),
-        createdAt: '',
-        deletedAt: '',
-        enable: false,
-        firstLogin: false,
-        isSuperAdmin: false,
-        mainPicture: null,
-        updatedAt: '',
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '+56912345678',
-        provider: 'Apuestas Royal',
-        birthday: '1990-01-01',
-        email: `jdoe+${i}@mail.com`
-      });
-    }
-    const pagination = {
-      currentPage: paginationTable.value.page,
-      limit: 20,
-      total: 100
-    };
-    rows.value = data;
-    paginationTable.value.rowsNumber = pagination.total;
-    paginationTable.value.rowsPerPage = pagination.limit;
-    paginationTable.value.page = pagination.currentPage;
-    paginationTable.value.sortBy = sort as 'desc' | 'asc';
+    const { data } = await ListUseCase.handle({
+      pagination: {
+        limit,
+        ...(offset > 0 ? { offset } : {})
+      },
+      ...(searchV ? { filter: { search: searchV } } : {}),
+      sort,
+      sortOrder
+    });
+    rows.value = data.data;
+    paginationTable.value.rowsNumber = data.pagination.total;
+    paginationTable.value.rowsPerPage = data.pagination.limit;
+    paginationTable.value.page = data.pagination.total / (offset + data.data.length);
+    paginationTable.value.sortBy = sort;
     paginationTable.value.descending = sortOrder;
     loadingPagination.value = false;
   }
-  catch (err: any)
+  catch (err: AxiosError | any)
   {
+    console.log(err);
     loadingPagination.value = false;
     NotifyFn(
       NotificationEnum.ERROR,
@@ -505,6 +426,6 @@ const onRequest = async(props: {
 
 onMounted(async() =>
 {
-  await GetItems(20, 0, '', null);
+  await GetItems(20, 0, '', null, 'creado', false);
 });
 </script>

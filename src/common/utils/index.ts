@@ -13,3 +13,4 @@ export * from './rm-prop';
 export * from './apply-highlight';
 export * from './remove-non-numeric-characters';
 export * from './on-error-push-to-page';
+export * from './parse-date';

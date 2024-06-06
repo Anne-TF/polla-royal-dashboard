@@ -1,1 +1,5 @@
-export * from './UserForm.vue';
+import UserForm from './UserForm.vue';
+
+export {
+  UserForm
+}

@@ -169,7 +169,7 @@ import { NotificationEnum } from '@common/constants';
 import { useAuthStore } from '@modules/auth/domain/store';
 import { DeleteUserUseCase, ListUseCase } from '@modules/users/domain/useCases';
 import { AxiosError } from 'axios';
-import { ParseDate } from '../../../../common/utils';
+import { ParseDate } from '@common/utils';
 
 // IMMUTABLES
 const { t } = useI18n({ useScope: 'global' });
@@ -376,7 +376,6 @@ const GetItems = async(
   }
   catch (err: AxiosError | any)
   {
-    console.log(err);
     loadingPagination.value = false;
     NotifyFn(
       NotificationEnum.ERROR,

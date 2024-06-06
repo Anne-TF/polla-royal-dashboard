@@ -3,9 +3,9 @@ import { AxiosError } from 'axios';
 import { Catch } from '@common/decorators/catch.decorator';
 import { DefaultCatch } from '@common/decorators/default-catch.decorator';
 import { ZodError } from 'zod';
-import { UsersGateway } from '@modules/users/infrastructure/gateways';
 import { useAuthStore } from '@modules/auth/domain/store';
 import { IListOptionsSchema, ListOptionsSchema } from '@common/schemas';
+import { OperatorsGateway } from '@modules/operators/infrastructure/gateways';
 
 export class ListUseCase
 {
@@ -20,6 +20,6 @@ export class ListUseCase
   static async handle(queryParams: IListOptionsSchema)
   {
     const authStore = useAuthStore();
-    return await UsersGateway.list(queryParams, authStore.GetToken);
+    return await OperatorsGateway.list(queryParams, authStore.GetToken);
   }
 }

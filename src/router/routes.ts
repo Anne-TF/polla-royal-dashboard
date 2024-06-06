@@ -49,6 +49,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         component: () => import('@modules/operators/presentation/pages/IndexPage.vue')
+      },
+      {
+        path: 'crear',
+        component: () => import('@modules/operators/presentation/pages/CreatePage.vue')
+      },
+      {
+        path: 'editar/:id',
+        component: () => import('@modules/operators/presentation/pages/UpdatePage.vue')
       }
     ],
     meta: {

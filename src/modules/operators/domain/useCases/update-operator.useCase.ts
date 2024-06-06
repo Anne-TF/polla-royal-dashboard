@@ -3,23 +3,27 @@ import { AxiosError } from 'axios';
 import { Catch } from '@common/decorators/catch.decorator';
 import { DefaultCatch } from '@common/decorators/default-catch.decorator';
 import { ZodError } from 'zod';
-import { UsersGateway } from '@modules/users/infrastructure/gateways';
 import { useAuthStore } from '@modules/auth/domain/store';
-import { IListOptionsSchema, ListOptionsSchema } from '@common/schemas';
+import { FormSchema, IFormSchema } from '@modules/users/presentation/schemas';
+import { OperatorsGateway } from '@modules/operators/infrastructure/gateways';
 
-export class ListUseCase
+export class UpdateOperatorUseCase
 {
-  static async validate(queryParams: IListOptionsSchema)
+
+  static async validate(data: Partial<IFormSchema>)
   {
-    return await ListOptionsSchema.parseAsync(queryParams);
+    return await FormSchema.parseAsync(data);
   }
 
   @DefaultCatch(defaultCatchError)
   @Catch(AxiosError, axiosCatchError)
   @Catch(ZodError, zodCatchError)
-  static async handle(queryParams: IListOptionsSchema)
+  static async handle(id: string, data: Partial <IFormSchema>)
   {
     const authStore = useAuthStore();
-    return await UsersGateway.list(queryParams, authStore.GetToken);
+
+    const _data = await this.validate(data) as IFormSchema;
+
+    return await OperatorsGateway.update(id, _data, authStore.GetToken);
   }
 }
